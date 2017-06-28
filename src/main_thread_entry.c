@@ -346,6 +346,7 @@ void time_int_callback(timer_callback_args_t * p_args)
 
     vout=b0*vin+b1*vin_ant1+b2*vin_ant2-a1*vout_ant1-a2*vout_ant2;
     media_R = vout;
+    tx_semaphore_ceiling_put(&g_main_semaphore_lcdc, 1);
 }
 
 void toggle_led (bsp_led_t led)

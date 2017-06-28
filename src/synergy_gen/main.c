@@ -49,8 +49,6 @@ void tx_application_define(void * first_unused_memory)
 
     tx_application_define_user (first_unused_memory);
 }
-
-
 int main(void)
 {
     __disable_irq ();
