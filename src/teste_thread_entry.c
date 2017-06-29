@@ -7,6 +7,6 @@ void teste_thread_entry(void)
     while (1)
     {
         toggle_led(0);
-        tx_thread_sleep (1);
+        tx_thread_sleep (100);
     }
 }

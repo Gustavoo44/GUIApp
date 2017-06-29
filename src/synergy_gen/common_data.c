@@ -36,6 +36,27 @@ void g_sf_message0_err_callback_internal(void * p_instance, void * p_data)
     /** An error has occurred. Please check function arguments for more information. */
     BSP_CFG_HANDLE_UNRECOVERABLE_ERROR (0);
 }
+/*******************************************************************************************************************//**
+ * @brief     Initialization function that the user can choose to have called automatically during thread entry.
+ *            The user can call this function at a later time if desired using the prototype below.
+
+ *            - void sf_message_init0(void)
+ **********************************************************************************************************************/
+void sf_message_init0(void)
+{
+    ssp_err_t ssp_err_g_sf_message0;
+
+    /* Initializes Messaging Framework Queues */
+    g_message_init ();
+
+    /* Opens the messaging framework */
+    ssp_err_g_sf_message0 = g_sf_message0.p_api->open (g_sf_message0.p_ctrl, g_sf_message0.p_cfg);
+    if (SSP_SUCCESS != ssp_err_g_sf_message0)
+    {
+        /* Error returns, check the cause. */
+        g_sf_message0_err_callback ((void *) &g_sf_message0, &ssp_err_g_sf_message0);
+    }
+}
 #if SYNERGY_NOT_DEFINED != BSP_IRQ_DISABLED
 #if !defined(SSP_SUPPRESS_ISR_DRW)
 SSP_VECTOR_DEFINE(drw_int_isr, DRW, INT);
@@ -331,11 +352,19 @@ const display_instance_t g_display =
 /** GUIX Canvas Buffer */
 #if false
 #ifdef __GNUC__
+#if (1 == 1) /* Inherit Frame Buffer Name from Graphics Screen 1 */
 uint8_t g_sf_el_gx_canvas[sizeof(g_display_fb_background[0])] __attribute__ ((aligned(4), section(".sdram")));
+#else /* Inherit Frame Buffer Name from Graphics Screen 2 */
+uint8_t g_sf_el_gx_canvas[sizeof(g_display_fb_foreground[0])] __attribute__ ((aligned(4), section(".sdram")));
+#endif
 #else /* __ICCARM__ */
 #pragma data_alignment = 4
 #pragma location = ".sdram"
+#if (1 == 1) /* Inherit Frame Buffer Name from Graphics Screen 1 */
 uint8_t g_sf_el_gx_canvas[sizeof(g_display_fb_background[0])];
+#else /* Inherit Frame Buffer Name from Graphics Screen 2 */
+uint8_t g_sf_el_gx_canvas[sizeof(g_display_fb_foreground[0])];
+#endif
 #endif
 #endif
 
@@ -357,38 +386,78 @@ static sf_el_gx_instance_ctrl_t g_sf_el_gx_ctrl;
 
 /** GUIX Port module configuration */
 static const sf_el_gx_cfg_t g_sf_el_gx_cfg =
-{ .p_display_instance = (display_instance_t *) &g_display, .p_display_runtime_cfg = &g_display_runtime_cfg_bg,
-#if false
+{
+/* Display Instance Configuration */
+.p_display_instance = (display_instance_t *) &g_display,
+
+  /* Display Driver Runtime Configuration */
+#if (1 == 1) /* Inherit Frame Buffer Name from Graphics Screen 1 */
+  .p_display_runtime_cfg = &g_display_runtime_cfg_bg,
+#else /* Inherit Frame Buffer Name from Graphics Screen 2 */
+  .p_display_runtime_cfg = &g_display_runtime_cfg_fg,
+#endif
+
+  /* GUIX Canvas Configuration */
+#if (false)
   .p_canvas = g_sf_el_gx_canvas,
 #else
   .p_canvas = NULL,
 #endif
-  .p_framebuffer_a = g_display_fb_background[0],
-  .p_framebuffer_b = g_display_fb_background[1], .p_callback = NULL,
+
+  /* Display Driver Frame Buffer A Configuration */
+#if (1 == 1) /* Inherit Frame Buffer Name from Graphics Screen 1 */
+  .p_framebuffer_a = &g_display_fb_background[0], /* Always array[0] is used */
+#else /* Inherit Frame Buffer Name from Graphics Screen 2 */
+  .p_framebuffer_a = &g_display_fb_foreground[0], /* Always array[0] is used */
+#endif
+
+  /* Display Driver Frame Buffer B Configuration */
+#if (1 == 1) /* Inherit Frame Buffer Name from Graphics Screen 1 */
+#if (2 > 1) /* Multiple frame buffers are used for Graphics Screen 1 */
+  .p_framebuffer_b = &g_display_fb_background[1], /* Always array[1] is used */
+#else /* Single Frame Buffer is used for Graphics Screen 1 */
+  .p_framebuffer_b = NULL,
+#endif
+#else /* Inherit Frame Buffer Name from Graphics Screen 2 */
+#if (2 > 1) /* Multiple frame buffers are used for Graphics Screen 2 */
+  .p_framebuffer_b = &g_display_fb_foreground[1], /* Always array[1] is used */
+#else /* Single Frame Buffer is used for Graphics Screen 2 */
+  .p_framebuffer_b = NULL,
+#endif
+#endif
+
+  /* User Callback Configuration */
+  .p_callback = NULL,
+
+  /* JPEG Work Buffer Configuration */
 #if GX_USE_SYNERGY_JPEG
   .p_jpegbuffer = g_sf_el_gx_jpegbuffer,
   .jpegbuffer_size = 81920,
+  .p_sf_jpeg_decode_instance = (void *)&g_sf_jpeg_decode0,
 #else
   .p_jpegbuffer = NULL,
-  .jpegbuffer_size = 0,
+  .jpegbuffer_size = 0, .p_sf_jpeg_decode_instance = NULL,
 #endif
+
+  /* Screen Rotation Angle Configuration */
   .rotation_angle = 0 };
 
 /** GUIX Port module instance */
 sf_el_gx_instance_t g_sf_el_gx =
 { .p_api = &sf_el_gx_on_guix, .p_ctrl = &g_sf_el_gx_ctrl, .p_cfg = &g_sf_el_gx_cfg };
+/* Instance structure to use this module. */
+const fmi_instance_t g_fmi =
+{ .p_api = &g_fmi_on_fmi };
+const elc_instance_t g_elc =
+{ .p_api = &g_elc_on_elc, .p_cfg = NULL };
+const cgc_instance_t g_cgc =
+{ .p_api = &g_cgc_on_cgc, .p_cfg = NULL };
+const ioport_instance_t g_ioport =
+{ .p_api = &g_ioport_on_ioport, .p_cfg = NULL };
 void g_common_init(void)
 {
-    ssp_err_t ssp_err_g_sf_message0;
-
-    /* Initializes Messaging Framework Queues */
-    g_message_init ();
-
-    /* Opens the messaging framework */
-    ssp_err_g_sf_message0 = g_sf_message0.p_api->open (g_sf_message0.p_ctrl, g_sf_message0.p_cfg);
-    if (SSP_SUCCESS != ssp_err_g_sf_message0)
-    {
-        /* Error returns, check the cause. */
-        g_sf_message0_err_callback ((void *) &g_sf_message0, &ssp_err_g_sf_message0);
-    }
+    /** Call initialization function if user has selected to do so. */
+#if (1)
+    sf_message_init0 ();
+#endif
 }
