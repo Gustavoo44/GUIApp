@@ -107,13 +107,13 @@
         <header>
             extern NX_TELNET_SERVER ${module.el.nx_telnet_server_v2.name};
             #if !defined(${module.el.nx_telnet_server_v2.client_connect_function})
-            UINT ${module.el.nx_telnet_server_v2.client_connect_function}(struct NX_TELNET_SERVER_STRUCT * telnet_server_ptr, UINT logical_connection);
+            void ${module.el.nx_telnet_server_v2.client_connect_function}(struct NX_TELNET_SERVER_STRUCT * telnet_server_ptr, UINT logical_connection);
             #endif
             #if !defined(${module.el.nx_telnet_server_v2.receive_data_function})
-            UINT ${module.el.nx_telnet_server_v2.receive_data_function}(struct NX_TELNET_SERVER_STRUCT * telnet_server_ptr, UINT logical_connection, NX_PACKET *packet_ptr);
+            void ${module.el.nx_telnet_server_v2.receive_data_function}(struct NX_TELNET_SERVER_STRUCT * telnet_server_ptr, UINT logical_connection, NX_PACKET *packet_ptr);
             #endif
             #if !defined(${module.el.nx_telnet_server_v2.client_disconnect_function})
-            UINT ${module.el.nx_telnet_server_v2.client_disconnect_function}(struct NX_TELNET_SERVER_STRUCT * telnet_server_ptr, UINT logical_connection);
+            void ${module.el.nx_telnet_server_v2.client_disconnect_function}(struct NX_TELNET_SERVER_STRUCT * telnet_server_ptr, UINT logical_connection);
             #endif
             void ${module.el.nx_telnet_server_v2.name}_err_callback(void * p_instance, void * p_data);
         </header>

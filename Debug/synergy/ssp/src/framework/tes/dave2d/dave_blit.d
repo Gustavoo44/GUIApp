@@ -1,13 +1,13 @@
 synergy/ssp/src/framework/tes/dave2d/dave_blit.o: ../synergy/ssp/src/framework/tes/dave2d/dave_blit.c \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_types.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes/dave_errorcodes.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes/dave_base.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes/dave_math.h \
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_types.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes/dave_errorcodes.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes/dave_base.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes/dave_math.h \
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h \
 ../synergy/ssp/src/framework/tes/dave2d/dave_intern.h \
 ../synergy/ssp/src/framework/tes/dave2d/dave_registermap.h \
 ../synergy/ssp/src/framework/tes/dave2d/dave_intern.h \
@@ -26,23 +26,23 @@ C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes
 ../synergy/ssp/src/framework/tes/dave2d/dave_texture.h \
 ../synergy/ssp/src/framework/tes/dave2d/dave_box.h
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_types.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_types.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes/dave_errorcodes.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes/dave_errorcodes.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes/dave_base.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes/dave_base.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes/dave_math.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes/dave_math.h:
 
-C:\\Users\\Dell\\e2_studio\\workspace\\GUIApp\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
+C:\\Users\\Eude Soares\\e2_studio\\workspace\\Gui\\synergy\\ssp\\inc\\framework\\tes\\dave_driver.h:
 
 ../synergy/ssp/src/framework/tes/dave2d/dave_intern.h:
 

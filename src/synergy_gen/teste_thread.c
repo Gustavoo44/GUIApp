@@ -9,6 +9,25 @@ static void teste_thread_func(ULONG thread_input);
 #pragma data_alignment = BSP_STACK_ALIGNMENT
 #endif
 static uint8_t teste_thread_stack[2048] BSP_PLACE_IN_SECTION(".stack.teste_thread") BSP_ALIGN_VARIABLE(BSP_STACK_ALIGNMENT);
+#if (2) != BSP_IRQ_DISABLED
+#if !defined(SSP_SUPPRESS_ISR_g_timer1) && !defined(SSP_SUPPRESS_ISR_GPT9)
+SSP_VECTOR_DEFINE_CHAN(gpt_counter_overflow_isr, GPT, COUNTER_OVERFLOW, 9);
+#endif
+#endif
+static gpt_instance_ctrl_t g_timer1_ctrl;
+static const timer_on_gpt_cfg_t g_timer1_extend =
+{ .gtioca =
+{ .output_enabled = true, .stop_level = GPT_PIN_LEVEL_LOW },
+  .gtiocb =
+  { .output_enabled = false, .stop_level = GPT_PIN_LEVEL_LOW } };
+static const timer_cfg_t g_timer1_cfg =
+{ .mode = TIMER_MODE_PERIODIC, .period = 20, .unit = TIMER_UNIT_PERIOD_MSEC, .duty_cycle = 20, .duty_cycle_unit =
+          TIMER_PWM_UNIT_PERCENT,
+  .channel = 9, .autostart = true, .p_callback = NULL, .p_context = &g_timer1, .p_extend = &g_timer1_extend, .irq_ipl =
+          (2), };
+/* Instance structure to use this module. */
+const timer_instance_t g_timer1 =
+{ .p_ctrl = &g_timer1_ctrl, .p_cfg = &g_timer1_cfg, .p_api = &g_timer_on_gpt };
 extern bool g_ssp_common_initialized;
 extern uint32_t g_ssp_common_thread_count;
 extern TX_SEMAPHORE g_ssp_common_initialized_semaphore;

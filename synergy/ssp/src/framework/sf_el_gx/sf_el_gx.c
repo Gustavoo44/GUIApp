@@ -129,6 +129,8 @@ void   sf_el_frame_toggle (ULONG _display_handle, GX_BYTE ** pp_visible_frame);
 
 void * sf_el_jpeg_buffer_get (ULONG _display_handle, int *p_memory_size);
 
+void * sf_el_jpeg_instance_get (ULONG _display_handle);
+
 int    sf_el_display_rotation_get(ULONG handle);
 
 void   sf_el_display_actual_size_get(ULONG _display_handle, int * p_width, int * p_height);
@@ -195,9 +197,10 @@ const sf_el_gx_api_t sf_el_gx_on_guix =
  * - tx_mutex_delete           Deletes the mutex if kernel service calls failed in the process.
  * - tx_semaphore_create       Creates the semaphore for rendering and displaying synchronization.
  * @retval  SSP_SUCCESS          Opened the module successfully.
- * @retval  SSP_ERR_ASSERTION    NULL pointer error happens.
- * @retval  SSP_ERR_IN_USE       SF_EL_GX is in-use.
- * @retval  SSP_ERR_INTERNAL     Error happen in Kernel service calls.
+ * @retval  SSP_ERR_ASSERTION           NULL pointer error happens.
+ * @retval  SSP_ERR_IN_USE              SF_EL_GX is in-use.
+ * @retval  SSP_ERR_INTERNAL            Error happen in Kernel service calls.
+ * @retval  SSP_ERR_INVALID_ARGUMENT    An invalid argument was passed to the driver.
  **********************************************************************************************************************/
 ssp_err_t SF_EL_GX_Open(sf_el_gx_ctrl_t * const p_api_ctrl, sf_el_gx_cfg_t const * const p_cfg)
 {
@@ -271,6 +274,7 @@ ssp_err_t SF_EL_GX_Open(sf_el_gx_ctrl_t * const p_api_ctrl, sf_el_gx_cfg_t const
     p_ctrl->jpegbuffer_size       = p_cfg->jpegbuffer_size;
     p_ctrl->rendering_enable      = false;
     p_ctrl->rotation_angle        = p_cfg->rotation_angle;
+    p_ctrl->p_sf_jpeg_decode_instance = p_cfg->p_sf_jpeg_decode_instance;
 
     /** Saves the control block to the global pointer inside the module temporarily. Stored data will be used in
      *  sf_el_gx_driver_setup() which will be invoked by GUIX. This pointer will be valid at last but be protected
@@ -465,6 +469,7 @@ UINT SF_EL_GX_Setup (GX_DISPLAY * p_display)
  * @brief  GUIX adaptation framework for Synergy, Canvas initialization, setup the memory address of first canvas to be
  * rendered.
  * @retval  SSP_SUCCESS          Memory address is successfully configured to a canvas.
+ * @retval  SSP_ERR_ASSERTION    Invalid control block (NULL pointer) passed to driver.
  * @retval  SSP_ERR_INVALID_CALL Function call was made when the driver is not in SF_EL_GX_CONFIGURED state.
  * @retval  SSP_ERR_INTERNAL     Mutex operation had an error.
  **********************************************************************************************************************/
@@ -918,6 +923,26 @@ void * sf_el_jpeg_buffer_get (ULONG _display_handle, int * p_memory_size)
 
 #endif
 }  /* End of function sf_el_jpeg_buffer_get() */
+
+/***********************************************************************************************************************
+ * @brief  GUIX adaptation framework for Synergy, get the instance of JPEG Framework module.
+ * This function is called by _gx_synergy_jpeg_draw
+ * @param[in]     display_handle     Pointer to the SF_EL_GX control block.
+ * @retval  Pointer to the instance of JPEG Framework module.
+ **********************************************************************************************************************/
+void * sf_el_jpeg_instance_get (ULONG _display_handle)
+{
+#if GX_USE_SYNERGY_JPEG
+    sf_el_gx_instance_ctrl_t * pctrl = (sf_el_gx_instance_ctrl_t *)(_display_handle);
+
+    return (void *)pctrl->p_sf_jpeg_decode_instance;
+
+#else
+    SSP_PARAMETER_NOT_USED(_display_handle);
+
+    return (NULL);
+#endif
+}  /* End of function sf_el_jpeg_instance_get() */
 
 /***********************************************************************************************************************
  * @brief  GUIX adaptation framework for Synergy, set CLUT table in the display module.

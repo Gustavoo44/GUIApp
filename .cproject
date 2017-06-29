@@ -444,10 +444,10 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/GUIApp"/>
+			<resource resourceType="PROJECT" workspacePath="/Gui"/>
 		</configuration>
 		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/GUIApp"/>
+			<resource resourceType="PROJECT" workspacePath="/Gui"/>
 		</configuration>
 	</storageModule>
 </cproject>

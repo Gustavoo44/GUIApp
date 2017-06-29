@@ -180,19 +180,18 @@ const timer_api_t g_timer_on_gpt =
  * @retval SSP_ERR_ASSERTION     One of the following parameters is incorrect.  Either
  *                                 - p_cfg is NULL, OR
  *                                 - p_ctrl is NULL, OR
- *                                 - The channel requested in the p_cfg parameter is not available on the device
- *                                   selected in r_bsp_cfg.h.
  * @retval SSP_ERR_INVALID_ARGUMENT  One of the following parameters is invalid:
  *                                 - p_cfg->period: must be in the following range:
  *                                     - Lower bound: (1 / (PCLK frequency)
  *                                     - Upper bound: (0xFFFFFFFF * 1024 / (PCLK frequency))
  *                                 - p_cfg->p_callback not NULL, but ISR is not enabled. ISR must be enabled to
  *                                   use callback function.  Enable channel's overflow ISR in bsp_irq_cfg.h.
- *                                 - p_cfg->mode is ::TIMER_MODE_ONE_SHOT, but ISR is not enabled.  ISR must be
- *                                   enabled to use one-shot mode.  Enable channel's overflow ISR in bsp_irq_cfg.h.
  * @retval SSP_ERR_IN_USE        The channel specified has already been opened. No configurations were changed. Call
  *                               the associated Close function or use associated Control commands to reconfigure the
  *                               channel.
+ * @retval SSP_ERR_IRQ_BSP_DISABLED  - p_cfg->mode is ::TIMER_MODE_ONE_SHOT, but ISR is not enabled.  ISR must be
+ *                                     enabled to use one-shot mode.
+ * @retval SSP_ERR_IP_CHANNEL_NOT_PRESENT - The channel requested in the p_cfg parameter is not available on this device.
  *
  * @note This function is reentrant for different channels.  It is not reentrant for the same channel.
  **********************************************************************************************************************/
@@ -604,6 +603,10 @@ static ssp_err_t gpt_common_open (gpt_instance_ctrl_t * const p_ctrl,
     {
         p_ctrl->one_shot = true;
     }
+    else
+    {
+        p_ctrl->one_shot = false;
+    }
 
     return SSP_SUCCESS;
 } /* End of function gpt_common_open */
@@ -943,41 +946,27 @@ void gpt_counter_overflow_isr (void)
     /** Clear pending IRQ to make sure it doesn't fire again after exiting */
     R_BSP_IrqStatusClear(R_SSP_CurrentIrqGet());
 
-#if GPT_CFG_PARAM_CHECKING_ENABLE
-    if (NULL == p_ctrl)
+    if (NULL != p_ctrl)
     {
-        /* The interrupt fired while the driver is not open. */
-        BSP_CFG_HANDLE_UNRECOVERABLE_ERROR(0);
-        SF_CONTEXT_RESTORE;
-        return;
-    }
-    if (NULL == p_ctrl->p_reg)
-    {
-        /* The interrupt fired while the driver is not open. */
-        BSP_CFG_HANDLE_UNRECOVERABLE_ERROR(0);
-        SF_CONTEXT_RESTORE;
-        return;
-    }
-#endif
+        GPT_BASE_PTR p_gpt_reg = (GPT_BASE_PTR) p_ctrl->p_reg;
 
-    GPT_BASE_PTR p_gpt_reg = (GPT_BASE_PTR) p_ctrl->p_reg;
+        /** If one-shot mode is selected, stop the timer since period has expired. */
+        if (p_ctrl->one_shot)
+        {
+            HW_GPT_CounterStartStop(p_gpt_reg, GPT_STOP);
+            HW_GPT_CounterSet(p_gpt_reg, 0);
+            HW_GPT_InterruptDisable(p_gpt_reg);
+            HW_GPT_InterruptClear(p_gpt_reg);
+        }
 
-    /** If one-shot mode is selected, stop the timer since period has expired. */
-    if (p_ctrl->one_shot)
-    {
-        HW_GPT_CounterStartStop(p_gpt_reg, GPT_STOP);
-        HW_GPT_CounterSet(p_gpt_reg, 0);
-        HW_GPT_InterruptDisable(p_gpt_reg);
-        HW_GPT_InterruptClear(p_gpt_reg);
-    }
-
-    if (NULL != p_ctrl->p_callback)
-    {
-        /** Set data to identify callback to user, then call user callback. */
-        timer_callback_args_t cb_data;
-        cb_data.p_context = p_ctrl->p_context;
-        cb_data.event     = TIMER_EVENT_EXPIRED;
-        p_ctrl->p_callback(&cb_data);
+        if (NULL != p_ctrl->p_callback)
+        {
+            /** Set data to identify callback to user, then call user callback. */
+            timer_callback_args_t cb_data;
+            cb_data.p_context = p_ctrl->p_context;
+            cb_data.event     = TIMER_EVENT_EXPIRED;
+            p_ctrl->p_callback(&cb_data);
+        }
     }
 
     /* Restore context if RTOS is used */

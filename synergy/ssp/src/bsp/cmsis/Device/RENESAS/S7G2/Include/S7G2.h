@@ -3036,7 +3036,16 @@ typedef struct {                                    /*!< R_SYSTEM Structure     
       __IO uint8_t   MSTS       :  4;               /*!< Main clock oscillator wait time setting                               */
     } MOSCWTCR_b;                                   /*!< BitSize                                                               */
   };
-  __I  uint8_t   RESERVED18[7];
+  __I  uint8_t   RESERVED18a[2];
+
+  union {
+    __IO uint8_t   HOCOWTCR;                        /*!< HOCO Clock Oscillator Wait Control Register                           */
+    
+    struct {
+      __IO uint8_t   HSTS       :  3;               /*!< HOCO clock oscillator wait time setting                               */
+    } HOCOWTCR_b;                                   /*!< BitSize                                                               */
+  };
+  __I  uint8_t   RESERVED18b[4];
   
   union {
     __IO uint8_t   SOPCCR;                          /*!< Sub Operating Power Control Register                                  */
@@ -7610,7 +7619,7 @@ typedef struct {                                    /*!< R_PMISC Structure      
     
     struct {
            uint8_t              :  6;
-      __IO uint8_t   PSFWE      :  1;               /*!< PFS Register Write Enable                                             */
+      __IO uint8_t   PFSWE      :  1;               /*!< PFS Register Write Enable                                             */
       __IO uint8_t   BOWI       :  1;               /*!< PFSWE Bit Write Disable                                               */
     } PWPR_b;                                       /*!< BitSize                                                               */
   };

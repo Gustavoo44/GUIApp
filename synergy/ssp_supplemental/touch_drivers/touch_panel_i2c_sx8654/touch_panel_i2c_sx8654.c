@@ -182,9 +182,6 @@ static ssp_err_t SX8654_i2c_read (i2c_api_master_t const * const p_i2c_api, i2c_
     for (int i = 0; i < SX8654_I2C_RETRY_TIMES; i++)
     {
         err = p_i2c_api->read(p_i2c_ctrl, p_dest, bytes, false);
-
-        tx_thread_sleep(2);
-
         if (SSP_SUCCESS == err)
         {
             break;
@@ -205,9 +202,6 @@ static ssp_err_t SX8654_i2c_write (i2c_api_master_t const * const p_i2c_api, i2c
     for (int i = 0; i < SX8654_I2C_RETRY_TIMES; i++)
     {
         err = p_i2c_api->write(p_i2c_ctrl, p_src, bytes, restart);
-
-        tx_thread_sleep(2);
-
         if (SSP_SUCCESS == err)
         {
             break;
@@ -229,16 +223,10 @@ static ssp_err_t SX8654_i2c_write_followed_by_read (i2c_api_master_t const * con
     {
         /** Performs I2C write operation with requesting restart condition. */
         err = p_i2c_api->write(p_i2c_ctrl, p_data, bytes, true);
-
-        tx_thread_sleep(2);
-
         if (SSP_SUCCESS == err)
         {
             /** Performs I2C read operation. This starts from the restart condition. */
             err = p_i2c_api->read(p_i2c_ctrl, p_data, bytes, false);
-
-            tx_thread_sleep(2);
-
             if (SSP_SUCCESS == err)
             {
                 break;
@@ -262,7 +250,7 @@ ssp_err_t SX8654_payload_get (sf_touch_panel_ctrl_t * const p_api_ctrl, sf_touch
     ssp_err_t err;
 
 
-    /** Wait pin interrupt from touch controller for 1 count in OS timer. */
+    /** Wait pin interrupt from touch controller. */
     err = p_irq_api->wait(p_irq_ctrl, TX_WAIT_FOREVER);
     if (SSP_SUCCESS != err)
     {

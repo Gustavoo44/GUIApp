@@ -91,6 +91,8 @@ typedef struct st_bsp_feature_dac
 typedef struct st_bsp_feature_flash_lp
 {
     uint8_t     flash_clock_src;              ///< Source clock for Flash (ie. FCLK or ICLK)
+    uint8_t     flash_cf_macros;              ///< Number of implemented code flash hardware macros
+    uint32_t    cf_macro_size;                ///< The size of the implemented Code Flash macro
 } bsp_feature_flash_lp;
 
 /** FLASH HP MCU specific features. */

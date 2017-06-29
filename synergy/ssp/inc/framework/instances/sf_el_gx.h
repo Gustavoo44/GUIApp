@@ -68,6 +68,7 @@ typedef struct st_sf_el_gx_instance_ctrl
     void                  * p_jpegbuffer;          ///< Pointer to a JPEG work buffer
     uint32_t                jpegbuffer_size;       ///< Size of a JPEG work buffer
     uint16_t                rotation_angle;        ///< Screen rotation angle(0/90/270)
+    void                  * p_sf_jpeg_decode_instance;  ///< Pointer to a JPEG framework instance
 } sf_el_gx_instance_ctrl_t;
 
 /**********************************************************************************************************************

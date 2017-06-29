@@ -316,6 +316,8 @@ ssp_err_t R_RIIC_MasterClose        (i2c_ctrl_t             * const p_api_ctrl)
  * @retval  SSP_SUCCESS             Function executed without issue,
  *                                  if no callback was provided, the process was kicked off.
  * @retval  SSP_ERR_ASSERTION       p_api_ctrl, p_dest or bytes is NULL.
+ * @retval  SSP_ERR_INVALID_SIZE    Provided number of bytes more than uint16_t size(65535) while DTC is used
+ *                                  for data transfer.
  * @retval  SSP_ERR_IN_USE          Another transfer was in progress.
  * @retval  SSP_ERR_ABORTED         The transfer failed.
 ***********************************************************************************************************************/
@@ -344,6 +346,19 @@ ssp_err_t R_RIIC_MasterRead         (i2c_ctrl_t             * const p_api_ctrl,
     }
     else
     {
+        /* If DTC is used for data transfer validate the data length provided by user,
+         * If length not supported then return error. */
+        if (NULL != p_ctrl->info.p_transfer_rx)
+        {
+            uint32_t num_transfers = bytes;
+            transfer_properties_t transfer_max = {0U};
+            p_ctrl->info.p_transfer_rx->p_api->infoGet(p_ctrl->info.p_transfer_rx->p_ctrl, &transfer_max);
+            if (num_transfers >= transfer_max.transfer_length_max)
+            {
+                return SSP_ERR_INVALID_SIZE;
+            }
+
+        }
         /* Record the new information about this transfer */
         p_ctrl->p_buff  = p_dest;
         p_ctrl->total   = bytes;
@@ -385,6 +400,8 @@ ssp_err_t R_RIIC_MasterRead         (i2c_ctrl_t             * const p_api_ctrl,
  * @retval  SSP_SUCCESS           Function executed without issue,
  *                                if no callback was provided, the process was kicked off.
  * @retval  SSP_ERR_ASSERTION     p_api_ctrl or p_src is NULL.
+ * @retval  SSP_ERR_INVALID_SIZE  Provided number of bytes more than uint16_t size(65535) while DTC is used
+ *                                for data transfer.
  * @retval  SSP_ERR_IN_USE        Another transfer was in progress.
  * @retval  SSP_ERR_ABORTED       The transfer failed.
 ***********************************************************************************************************************/
@@ -412,6 +429,18 @@ ssp_err_t R_RIIC_MasterWrite        (i2c_ctrl_t             * const p_api_ctrl,
     }
     else
     {
+        /* If DTC is used for data transfer validate the data length provided by user,
+         * If length not supported then return error. */
+        if (NULL != p_ctrl->info.p_transfer_tx)
+        {
+            uint32_t num_transfers = bytes;
+            transfer_properties_t transfer_max = {0U};
+            p_ctrl->info.p_transfer_tx->p_api->infoGet(p_ctrl->info.p_transfer_tx->p_ctrl, &transfer_max);
+            if (num_transfers >= transfer_max.transfer_length_max)
+            {
+                return SSP_ERR_INVALID_SIZE;
+            }
+        }
         /* Record the new information about this transfer */
         p_ctrl->p_buff  = p_src;
         p_ctrl->total   = bytes;
@@ -1337,14 +1366,14 @@ void iic_tei_isr  (void)
     /* Save context if RTOS is used */
     SF_CONTEXT_SAVE
 
-    /* Clear the IR flag */
-    R_BSP_IrqStatusClear (R_SSP_CurrentIrqGet());
-
     ssp_vector_info_t * p_vector_info = NULL;
     R_SSP_VectorInfoGet(R_SSP_CurrentIrqGet(), &p_vector_info);
     riic_instance_ctrl_t * p_ctrl = (riic_instance_ctrl_t *) *(p_vector_info->pp_ctrl);
 
     riic_tei_master(p_ctrl);
+
+    /* Clear the IR flag */
+    R_BSP_IrqStatusClear (R_SSP_CurrentIrqGet());
 
     /* Restore context if RTOS is used */
     SF_CONTEXT_RESTORE
@@ -1362,14 +1391,14 @@ void iic_eri_isr (void)
     /* Save context if RTOS is used */
     SF_CONTEXT_SAVE
 
-    /* Clear the IR flag */
-    R_BSP_IrqStatusClear (R_SSP_CurrentIrqGet());
-
     ssp_vector_info_t * p_vector_info = NULL;
     R_SSP_VectorInfoGet(R_SSP_CurrentIrqGet(), &p_vector_info);
     riic_instance_ctrl_t * p_ctrl = (riic_instance_ctrl_t *) *(p_vector_info->pp_ctrl);
 
     riic_err_master(p_ctrl);
+
+    /* Clear the IR flag */
+    R_BSP_IrqStatusClear (R_SSP_CurrentIrqGet());
 
     /* Restore context if RTOS is used */
     SF_CONTEXT_RESTORE

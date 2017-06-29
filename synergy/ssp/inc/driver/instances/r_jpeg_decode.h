@@ -43,7 +43,7 @@
  * Macro definitions
  **********************************************************************************************************************/
 #define JPEG_DECODE_CODE_VERSION_MAJOR (1U)
-#define JPEG_DECODE_CODE_VERSION_MINOR (3U)
+#define JPEG_DECODE_CODE_VERSION_MINOR (4U)
 
 /***********************************************************************************************************************
  * Typedef definitions
@@ -77,12 +77,6 @@ typedef struct st_jpeg_decode_instance_ctrl
 
 /** Common macro for SSP header files. There is also a corresponding SSP_FOOTER macro at the end of this file. */
 SSP_HEADER
-
-/***********************************************************************************************************************
- * Macro definitions
- **********************************************************************************************************************/
-#define JPEG_CODE_VERSION_MAJOR (1U)
-#define JPEG_CODE_VERSION_MINOR (3U)
 
 /**********************************************************************************************************************
  * Exported global variables

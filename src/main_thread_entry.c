@@ -335,6 +335,7 @@ void g_lcd_spi_callback(spi_callback_args_t * p_args)
 
 void time_int_callback(timer_callback_args_t * p_args)
 {
+    SSP_PARAMETER_NOT_USED(p_args);
     result_status = ADC_HAL_channel_read(0, &adc_result);
     vin_ant2=vin_ant1;
     vin_ant1=vin;

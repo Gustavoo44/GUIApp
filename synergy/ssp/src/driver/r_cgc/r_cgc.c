@@ -52,6 +52,12 @@
 
 #define CGC_LCD_CFG_TIMEOUT     (0xFFFFFU)
 
+/* From user's manual and discussions with hardware group, 
+ * using the maximum is safe for all MCUs, will be updated and restored in LPMV2 when entering
+ * low power mode on S7 and S5 MCUs (lowPowerModeEnter())
+ */
+#define MAXIMUM_HOCOWTR_HSTS    ((uint8_t)0x6U)
+
 /***********************************************************************************************************************
  * Typedef definitions
  **********************************************************************************************************************/
@@ -181,6 +187,23 @@ ssp_err_t R_CGC_Init (void)
     gp_system_reg = (R_SYSTEM_Type *) info.ptr;
 
     volatile uint32_t timeout;
+    timeout = MAX_REGISTER_WAIT_COUNT;
+
+    /* Update HOCOWTCR_b.HSTS */
+    if(true == HW_CGC_ClockRunStateGet(gp_system_reg, CGC_CLOCK_HOCO))
+    {
+        /* Make sure the HOCO is stable before changing wait control register */
+        while ((false == HW_CGC_ClockCheck(gp_system_reg, CGC_CLOCK_HOCO)) && (0U != timeout))
+        {
+            /* wait until the clock state is stable */
+            timeout--;
+        }
+        CGC_ERROR_RETURN(timeout, SSP_ERR_HARDWARE_TIMEOUT);
+    }
+
+    /* Set HOCOWTCR_b.HSTS */
+    HW_CGC_HocoWaitControlSet(gp_system_reg, MAXIMUM_HOCOWTR_HSTS);
+
     timeout = MAX_REGISTER_WAIT_COUNT;
     HW_CGC_Init();                              // initialize hardware functions
     HW_CGC_ClockStop(gp_system_reg, CGC_CLOCK_SUBCLOCK);       // stop SubClock

@@ -107,7 +107,7 @@
         <declarations>
             #if defined(__ICCARM__)
             #define ${module.el.nx_auto_ip.name}_err_callback_WEAK_ATTRIBUTE
-            pragma weak ${module.el.nx_auto_ip.name}_err_callback  = ${module.el.nx_auto_ip.name}_err_callback_internal
+            #pragma weak ${module.el.nx_auto_ip.name}_err_callback  = ${module.el.nx_auto_ip.name}_err_callback_internal
             #elif defined(__GNUC__)
             #define ${module.el.nx_auto_ip.name}_err_callback_WEAK_ATTRIBUTE   __attribute__ ((weak, alias("${module.el.nx_auto_ip.name}_err_callback_internal")))
             #endif

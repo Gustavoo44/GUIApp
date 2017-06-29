@@ -1,6 +1,6 @@
 /**************************************************************************/
 /*                                                                        */
-/*            Copyright (c) 1996-2016 by Express Logic Inc.               */
+/*            Copyright (c) 1996-2017 by Express Logic Inc.               */
 /*                                                                        */
 /*  This software is copyrighted by and is the sole property of Express   */
 /*  Logic, Inc.  All rights, title, ownership, or other interests         */
@@ -940,8 +940,10 @@ VOID _gx_dave2d_glyph_8bit_draw(GX_DRAW_CONTEXT *context, GX_RECTANGLE *draw_are
 d2_device  *dave;
 GX_COLOR    text_color;
 d2_u32      mode = 0;
+GX_UBYTE    alpha;
 
     text_color =  context -> gx_draw_context_brush.gx_brush_line_color;
+    alpha = context -> gx_draw_context_brush.gx_brush_alpha;
 
     /* pickup pointer to current display driver */
 
@@ -955,6 +957,8 @@ d2_u32      mode = 0;
                 draw_area -> gx_rectangle_right, draw_area -> gx_rectangle_bottom))
 
     CHECK_DAVE_STATUS(d2_setcolor(dave, 1, _gx_d2_color(text_color)))
+    /* Set alpha if user want.*/
+    CHECK_DAVE_STATUS(d2_setalpha(dave, alpha))
 
     CHECK_DAVE_STATUS(d2_setblitsrc(dave, (void *)glyph -> gx_glyph_map,
                            glyph -> gx_glyph_width, glyph -> gx_glyph_width,
@@ -972,6 +976,8 @@ d2_u32      mode = 0;
                          (d2_point)(D2_FIX4(draw_area -> gx_rectangle_top)),
                          d2_bf_colorize2 | d2_bf_usealpha | d2_bf_filter))
 
+    /* Reset alpha value to default 0xff */
+    CHECK_DAVE_STATUS(d2_setalpha(dave, 0xff))
 }
 
 /*****************************************************************************/
@@ -2191,7 +2197,9 @@ int rotation_angle;
 #define JPEG_ALIGNMENT_16 (0x0F)
 #define JPEG_ALIGNMENT_32 (0x1F)
 
-extern void* sf_el_jpeg_buffer_get(ULONG _display_handle, int *memory_size);
+extern void * sf_el_jpeg_buffer_get(ULONG _display_handle, int *memory_size);
+
+extern void * sf_el_jpeg_instance_get (ULONG _display_handle);
 
 /*****************************************************************************/
 /* hardware jpeg decode and draw                                             */
@@ -2210,11 +2218,10 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     GX_VALUE                  image_height;
 
     GX_PIXELMAP               out_pixelmap;
-    sf_jpeg_decode_instance_ctrl_t     sf_jpeg_decode_ctrl;
-    jpeg_decode_instance_ctrl_t        jpeg_decode_ctrl;
+    sf_jpeg_decode_instance_t * p_sf_jpeg_decode;
+    jpeg_decode_instance_t    * p_jpeg_decode;
     jpeg_decode_cfg_t         jpeg_decode_cfg;
 
-    sf_jpeg_decode_api_t *    p_sf_jpeg = (sf_jpeg_decode_api_t *)&g_sf_jpeg_decode_on_sf_jpeg_decode;
     UINT                      minimum_height = 0;
     UINT                      memory_required = 0;
     UINT                      total_lines_decoded = 0;
@@ -2222,11 +2229,13 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     UINT                      lines_decoded;
     int                       jpeg_buffer_size;
 
-    /** Prepare Synergy Hardware JPEG driver. */
-    memset(&sf_jpeg_decode_ctrl, 0x00, sizeof(sf_jpeg_decode_instance_ctrl_t));
-    memset(&jpeg_decode_ctrl, 0x00, sizeof(jpeg_decode_instance_ctrl_t));
+    p_sf_jpeg_decode = (sf_jpeg_decode_instance_t *)sf_el_jpeg_instance_get(
+                                                     p_context->gx_draw_context_display->gx_display_handle);
+    p_jpeg_decode    = (jpeg_decode_instance_t *)p_sf_jpeg_decode->p_cfg->p_lower_lvl_jpeg_decode;
 
-    jpeg_decode_cfg.alpha_value = 0xff;
+    /** Configure Synergy Hardware JPEG driver. */
+    jpeg_decode_cfg = *(p_jpeg_decode->p_cfg);
+    jpeg_decode_cfg.alpha_value        = 0xff;
     jpeg_decode_cfg.input_data_format  = JPEG_DECODE_DATA_FORMAT_NORMAL;
     jpeg_decode_cfg.output_data_format = JPEG_DECODE_DATA_FORMAT_NORMAL;
     if (GX_COLOR_FORMAT_32ARGB == color_format)
@@ -2247,8 +2256,8 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     }
 
     jpeg_decode_instance_t    jpeg_decode_instance = {
-        .p_api  = &g_jpeg_decode_on_jpeg_decode,
-        .p_ctrl = (jpeg_decode_ctrl_t *)&jpeg_decode_ctrl,
+        .p_api  = p_jpeg_decode->p_api,
+        .p_ctrl = p_jpeg_decode->p_ctrl,
         .p_cfg  = &jpeg_decode_cfg
     };
     sf_jpeg_decode_cfg_t      sf_jpeg_decode_cfg = {
@@ -2256,34 +2265,37 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     };
 
     /** Opens the JPEG driver.  */
-    ret = p_sf_jpeg->open(&sf_jpeg_decode_ctrl, &sf_jpeg_decode_cfg);
+    ret = p_sf_jpeg_decode->p_api->open(p_sf_jpeg_decode->p_ctrl, &sf_jpeg_decode_cfg);
 
     /** Sets the vertical and horizontal sample.  */
-    ret += p_sf_jpeg->imageSubsampleSet(&sf_jpeg_decode_ctrl,
+    ret += p_sf_jpeg_decode->p_api->imageSubsampleSet(p_sf_jpeg_decode->p_ctrl,
                           JPEG_DECODE_OUTPUT_NO_SUBSAMPLE, JPEG_DECODE_OUTPUT_NO_SUBSAMPLE);
 
     /** Sets the input buffer address.  */
-    ret += p_sf_jpeg->inputBufferSet(&sf_jpeg_decode_ctrl,
+    ret += p_sf_jpeg_decode->p_api->inputBufferSet(p_sf_jpeg_decode->p_ctrl,
                    (UCHAR *)p_pixelmap->gx_pixelmap_data, p_pixelmap->gx_pixelmap_data_size);
 
     /** Gets the JPEG hardware status.  */
-    ret += p_sf_jpeg->wait(&sf_jpeg_decode_ctrl, &jpeg_decode_status, 1);
+    ret += p_sf_jpeg_decode->p_api->wait(p_sf_jpeg_decode->p_ctrl, &jpeg_decode_status, 1000);
 
     if ((ret) || (!(JPEG_DECODE_STATUS_IMAGE_SIZE_READY & jpeg_decode_status)))
     {
         /* nothing to draw.  Close the device and return */
-        p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }
 
     /** Gets the size of JPEG image.  */
-    ret += p_sf_jpeg->imageSizeGet(&sf_jpeg_decode_ctrl, (uint16_t *)&image_width, (uint16_t *)&image_height);
+    ret += p_sf_jpeg_decode->p_api->imageSizeGet(p_sf_jpeg_decode->p_ctrl,
+                                                 (uint16_t *)&image_width, (uint16_t *)&image_height);
 
     /** Gets the pixel format of JPEG image.  */
-    ret += p_sf_jpeg->pixelFormatGet(&sf_jpeg_decode_ctrl, &pixel_format);
+    ret += p_sf_jpeg_decode->p_api->pixelFormatGet(p_sf_jpeg_decode->p_ctrl, &pixel_format);
 
     if (ret)
     {
+        /* nothing to draw.  Close the device and return */
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }
 
@@ -2295,7 +2307,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     if (!gx_utility_rectangle_overlap_detect(&bound, &p_context->gx_draw_context_dirty, &bound))
     {
         /* nothing to draw.  Close the device and return */
-        p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }
 
@@ -2309,7 +2321,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
         /* 8 lines by 8 pixels. */
         if ((image_width & JPEG_ALIGNMENT_8) || (image_height & JPEG_ALIGNMENT_8))
         {
-            p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+            p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
             return;
         }
 
@@ -2320,7 +2332,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
         /* 8 lines by 16 pixels. */
         if ((image_width & JPEG_ALIGNMENT_16) || (image_height & JPEG_ALIGNMENT_8))
         {
-            p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+            p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
             return;
         }
 
@@ -2331,7 +2343,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
         /* 8 lines by 32 pixels. */
         if ((image_width & JPEG_ALIGNMENT_32) || (image_height & JPEG_ALIGNMENT_8))
         {
-            p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+            p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
             return;
         }
 
@@ -2342,14 +2354,14 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
         /* 16 lines by 16 pixels. */
         if ((image_width & JPEG_ALIGNMENT_16) || (image_height & JPEG_ALIGNMENT_16))
         {
-            p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+            p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
             return;
         }
         minimum_height = 16;
         break;
 
     default:
-        p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }
 
@@ -2360,7 +2372,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     /* Verify JPEG output buffer size meets minimum memory requirement. */
     if((UINT)jpeg_buffer_size < memory_required)
     {
-        p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }
 
@@ -2368,7 +2380,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     if (output_buffer == GX_NULL)
     {
         /* If the system memory allocation function fails, nothing needs to be done but close the JPEG device and return .*/
-        p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }
 
@@ -2376,7 +2388,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     if ((ULONG)output_buffer & 0x7)
     {
         /* Close the JPEG device and return. */
-        p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }        
 
@@ -2391,7 +2403,7 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
     out_pixelmap.gx_pixelmap_flags         = 0;
 
     /** Sets the horizontal stride. */
-    ret += (INT)(p_sf_jpeg->horizontalStrideSet(&sf_jpeg_decode_ctrl, (uint32_t)image_width));
+    ret += (INT)(p_sf_jpeg_decode->p_api->horizontalStrideSet(p_sf_jpeg_decode->p_ctrl, (uint32_t)image_width));
 
 
     remaining_lines = (UINT)image_height;
@@ -2409,13 +2421,13 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
         #endif
 
         /** Assigns the output buffer to start the decoding process. */
-        ret = p_sf_jpeg->outputBufferSet(&sf_jpeg_decode_ctrl,
+        ret = p_sf_jpeg_decode->p_api->outputBufferSet(p_sf_jpeg_decode->p_ctrl,
                                          (VOID*)(INT)(out_pixelmap.gx_pixelmap_data), (UINT)jpeg_buffer_size);
 
         if(ret != SSP_SUCCESS)
         {
             /* If the system memory allocation function fails, nothing needs to be done but close the JPEG device and return .*/
-            p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+            p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
             return;
         }
 
@@ -2423,20 +2435,21 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
         jpeg_decode_status = JPEG_DECODE_STATUS_FREE;
         while ((ret == 0) && (jpeg_decode_status & JPEG_DECODE_STATUS_OUTPUT_PAUSE) == 0)
         {
-            ret = p_sf_jpeg->wait(&sf_jpeg_decode_ctrl, &jpeg_decode_status, 10);
+            ret = p_sf_jpeg_decode->p_api->wait(p_sf_jpeg_decode->p_ctrl, &jpeg_decode_status, 1000);
             if(ret != 0)
             {
+                p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
                 return;
             }
             if(jpeg_decode_status & JPEG_DECODE_STATUS_DONE)break;
         }
 
         lines_decoded = 0;
-        ret = p_sf_jpeg->linesDecodedGet(&sf_jpeg_decode_ctrl, (uint32_t *) &lines_decoded);
+        ret = p_sf_jpeg_decode->p_api->linesDecodedGet(p_sf_jpeg_decode->p_ctrl, (uint32_t *) &lines_decoded);
 
         if((ret != SSP_SUCCESS) || (lines_decoded == 0))
         {
-            p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+            p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
             return;
         }
 
@@ -2478,13 +2491,13 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
         #endif
     }
     
-    ret = (GX_VALUE)(ret + p_sf_jpeg->close(&sf_jpeg_decode_ctrl));
+    ret = (GX_VALUE)(ret + p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl));
 
     /** Detects memory allocation errors. */
     if (ret != SSP_SUCCESS)
     {
         /* If the system memory allocation function fails, nothing needs to be done but close the JPEG device and return .*/
-        p_sf_jpeg->close(&sf_jpeg_decode_ctrl);
+        p_sf_jpeg_decode->p_api->close(p_sf_jpeg_decode->p_ctrl);
         return;
     }
 }  /* End of function _gx_driver_jpeg_draw() */

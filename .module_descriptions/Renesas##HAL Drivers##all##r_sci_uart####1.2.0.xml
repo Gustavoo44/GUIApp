@@ -254,7 +254,7 @@ SSP_VECTOR_DEFINE_CHAN(sci_uart_eri_isr, SCI, ERI, ${module.driver.uart.channel}
                 .baudclk_out         = ${module.driver.uart.baudclk_out},
                 .rx_edge_start       = ${module.driver.uart.rx_edge_start},
                 .noisecancel_en      = ${module.driver.uart.noisecancel_en},
-                .p_extpin_ctrl       = (void *)${module.driver.uart.callback.rts_pin_ctrl},
+                .p_extpin_ctrl       = ${module.driver.uart.callback.rts_pin_ctrl},
                 .bitrate_modulation  = ${module.driver.uart.bitrate_modulation}
             };
 

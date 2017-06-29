@@ -55,7 +55,7 @@ Macro definitions
 ***********************************************************************************************************************/
 /** Version of code that implements the API defined in this file */
 #define ADC_CODE_VERSION_MAJOR  (1U)
-#define ADC_CODE_VERSION_MINOR  (2U)
+#define ADC_CODE_VERSION_MINOR  (3U)
 
 /** Typical values that can be used to modify the sample states.
  * The minimum sample state count value is either 6 or 7 depending on the clock ratios.
@@ -121,6 +121,7 @@ typedef struct
     uint16_t      unit;             ///< ADC Unit in use
     adc_mode_t    mode;             ///< operational mode
     uint8_t       max_resolution;   ///< ADC max resolution: 8, 10, 12, or 14-bit
+    uint8_t       pga_available;    ///< PGA available or not on MCU
     void const  * p_context;        ///< Placeholder for user data
     void        * p_reg;            ///< Base register for this unit
     void          (*callback)(adc_callback_args_t *p_args);

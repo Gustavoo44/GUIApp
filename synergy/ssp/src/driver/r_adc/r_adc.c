@@ -51,6 +51,12 @@ Includes   <System Includes> , "Project Includes"
 #define ADC_VARIANT_RESOLUTION_MASK    (0x1C)
 #define ADC_VARIANT_RESOLUTION_SHIFT   (2)
 
+/** ADC PGA availability  is defined by b5 of the variant data. PGA is present when resolution_variant = 1; not present
+ * when resolution_variant = 0.
+ */
+#define ADC_VARIANT_PGA_MASK (0x20U)
+#define ADC_VARIANT_PGA_SHIFT (5)
+
 /** Maximum number of units on any Synergy ADC. */
 #define ADC_MAX_UNITS                  (2)
 
@@ -76,6 +82,7 @@ static ssp_err_t r_adc_open_cfg_align_add_clear_check(adc_cfg_t const * const p_
 static ssp_err_t r_adc_open_cfg_trigger_mode_check(adc_cfg_t const * const p_cfg);
 static ssp_err_t r_adc_open_cfg_resolution_check(adc_cfg_t const * const p_cfg, uint8_t resolution);
 static ssp_err_t r_adc_sample_state_cfg_check(adc_instance_ctrl_t * p_ctrl, adc_sample_state_t * p_sample);
+static ssp_err_t r_adc_infoget_param_check(adc_instance_ctrl_t * p_ctrl, adc_info_t * p_adc_info);
 #endif /* (1 == ADC_CFG_PARAM_CHECKING_ENABLE) */
 
 static ssp_err_t r_adc_scan_cfg_check_sample_hold_group(ADC_BASE_PTR              const p_regs,
@@ -126,6 +133,7 @@ static ssp_err_t r_adc_scan_cfg(adc_instance_ctrl_t     * const p_ctrl,
                                 adc_channel_cfg_t const * const p_cfg,
                                 uint32_t          const * const p_valid_channels);
 static ssp_err_t r_adc_sensor_sample_state_calculation(uint32_t  * const p_sample_states);
+static ssp_err_t r_adc_unused_register_handling(adc_instance_ctrl_t * const p_ctrl);
 
 void adc_scan_end_b_isr(void);
 void adc_scan_end_isr(void);
@@ -260,6 +268,8 @@ ssp_err_t R_ADC_Open(adc_ctrl_t * p_api_ctrl,  adc_cfg_t const * const p_cfg)
     r_adc_close_sub(p_ctrl->p_reg, p_ctrl);
     /** Initialize the hardware based on the configuration*/
     r_adc_open_sub(p_ctrl->p_reg, p_cfg);
+    /** Set unused registers to known state (Disable ADC PGA on MCUs that have it) */
+    r_adc_unused_register_handling(p_ctrl);
     /** Invalid scan mask (initialized for later). */
     p_ctrl->scan_mask = 0U;
     /** Mark driver as opened by initializing it to "RADC" in its ASCII equivalent for this unit. */
@@ -374,28 +384,18 @@ ssp_err_t R_ADC_InfoGet(adc_ctrl_t * p_api_ctrl, adc_info_t * p_adc_info)
     ssp_err_t err = SSP_SUCCESS;
     uint32_t adc_mask = 0;
     uint32_t adc_mask_result = 0;
-    uint32_t adc_mask_count = 0;
+    int32_t adc_mask_count = -1;
     __I uint16_t * end_address;
 
      /** Perform parameter checking  */
 #if (1 == ADC_CFG_PARAM_CHECKING_ENABLE)
-    /** Verify the pointers are valid */
-    SSP_ASSERT (NULL != p_ctrl);
-    SSP_ASSERT (NULL != p_adc_info);
-
-    /** Ensure ADC Unit is already open  */
-    if (ADC_OPEN != p_ctrl->opened)
+    /** Verify the parameters are valid */
+    err = r_adc_infoget_param_check(p_api_ctrl, p_adc_info);
+    /** Return an error if the parameter check failed*/
+    if (SSP_SUCCESS != err)
     {
-        return SSP_ERR_NOT_OPEN;
+    	return err;
     }
-
-    /** Return an error if mode is Group Mode since that is not
-     * supported currently */
-    if (ADC_MODE_GROUP_SCAN == p_ctrl->mode)
-    {
-        return SSP_ERR_INVALID_ARGUMENT;
-    }
-    SSP_ASSERT (NULL != p_ctrl->p_reg);
 #endif
     /** Get a pointer to the base register for the current unit */
     ADC_BASE_PTR p_regs = (ADC_BASE_PTR) p_ctrl->p_reg;
@@ -404,22 +404,42 @@ ssp_err_t R_ADC_InfoGet(adc_ctrl_t * p_api_ctrl, adc_info_t * p_adc_info)
     /** Determine the lowest channel that is configured*/
     while (0U == adc_mask_result)
     {
-        adc_mask_result = (uint32_t)(adc_mask & ((uint32_t)1 << adc_mask_count));
-        adc_mask_count++;
+    	adc_mask_count++;
+        adc_mask_result = (uint32_t)(adc_mask & (1U << adc_mask_count));
     }
-    p_adc_info->p_address = HW_ADC_ResultRegAddrGet(p_regs, adc_mask_count - 1);
+
+    if ((uint32_t)(1U << adc_mask_count) == ADC_MASK_TEMPERATURE)
+    {
+    	adc_mask_count = ADC_REG_TEMPERATURE;
+    }
+    else if ((uint32_t)(1U << adc_mask_count) == ADC_MASK_VOLT)
+    {
+    	adc_mask_count = ADC_REG_VOLT;
+    }
+
+    p_adc_info->p_address = HW_ADC_ResultRegAddrGet(p_regs, adc_mask_count);
 
     /** Determine the highest channel that is configured*/
     /** Set the mask count so that we start with the highest bit of the 32 bit mask */
-    adc_mask_count = 31U;
+    adc_mask_count = 32;
     /** Initialize the mask result */
     adc_mask_result = 0U;
-    while (0 == adc_mask_result)
+    while (0U == adc_mask_result)
     {
-        adc_mask_result = (uint32_t)(adc_mask & ((uint32_t)1 << adc_mask_count));
-        adc_mask_count--;
+    	adc_mask_count--;
+        adc_mask_result = (uint32_t)(adc_mask & (1U << adc_mask_count));
     }
-    end_address = HW_ADC_ResultRegAddrGet(p_regs, adc_mask_count+1);
+
+    if ((uint32_t)(1U << adc_mask_count) == ADC_MASK_TEMPERATURE)
+    {
+    	adc_mask_count = ADC_REG_TEMPERATURE;
+    }
+    else if ((uint32_t)(1U << adc_mask_count) == ADC_MASK_VOLT)
+    {
+    	adc_mask_count = ADC_REG_VOLT;
+    }
+
+    end_address = HW_ADC_ResultRegAddrGet(p_regs, adc_mask_count);
 
     /** Determine the size of data that must be read to read all the channels between and including the
      * highest and lowest channels.*/
@@ -433,7 +453,7 @@ ssp_err_t R_ADC_InfoGet(adc_ctrl_t * p_api_ctrl, adc_info_t * p_adc_info)
     ssp_feature.id = SSP_IP_ADC;
     g_fmi_on_fmi.eventInfoGet(&ssp_feature, SSP_SIGNAL_ADC_SCAN_END, &event_info);
     p_adc_info->elc_event = event_info.event;
-    p_adc_info->elc_peripheral = (elc_peripheral_t) (ELC_PERIPHERAL_ADC0 + (2 * p_ctrl->unit));
+    p_adc_info->elc_peripheral = (elc_peripheral_t) (ELC_PERIPHERAL_ADC0 + (2U * p_ctrl->unit));
 
     return err;
 }
@@ -629,7 +649,7 @@ ssp_err_t R_ADC_Read(adc_ctrl_t * p_api_ctrl, adc_register_t const  reg_id, adc_
      * parameter checking is disabled. */
     p_regs = (ADC_BASE_PTR) p_ctrl->p_reg;
     /** Read the data from the requested ADC conversion register and return it */
-    *p_data = HW_ADC_ResultGet(p_regs, (uint32_t) reg_id);
+    *p_data = HW_ADC_ResultGet(p_regs, reg_id);
 
     /** Return the error code */
     return SSP_SUCCESS;
@@ -805,7 +825,8 @@ static ssp_err_t r_adc_fmi_query(adc_instance_ctrl_t * const p_ctrl,
     uint8_t max_resolution_bits = (uint8_t) ((info.variant_data & ADC_VARIANT_RESOLUTION_MASK)
             >> ADC_VARIANT_RESOLUTION_SHIFT);
     p_ctrl->max_resolution = (uint8_t) ((max_resolution_bits * 2U) + 8U);
-
+    /** Determine if PGA is present on MCU on not */
+    p_ctrl->pga_available = (uint8_t) ((info.variant_data & ADC_VARIANT_PGA_MASK) >> ADC_VARIANT_PGA_SHIFT);
     /** Set the valid channel mask based on variant data. */
     if (0U == g_adc_valid_channels[p_cfg->unit])
     {
@@ -827,6 +848,27 @@ static ssp_err_t r_adc_fmi_query(adc_instance_ctrl_t * const p_ctrl,
                 g_adc_valid_channels[p_cfg->unit] |= (p_extended_data[j] & 0xFFFF0000UL);
             }
         }
+    }
+
+    return SSP_SUCCESS;
+}
+/*******************************************************************************************************************//**
+ * @brief   r_adc_unused_register_handling
+ *
+ * This function disables the unused ADC PGA feature (on MCUs where it is available) since the feature is enabled
+ * out of RESET on some MCUs and disabled on others and affect the operation of the normal ADC channels that are
+ * multiplexed with the PGA.
+ *
+ * @param[in]  p_ctrl          :  ADC control structure.
+ * @retval  SSP_SUCCESS           PGA disabled on MCUs that have PGA feature
+***********************************************************************************************************************/
+static ssp_err_t r_adc_unused_register_handling(adc_instance_ctrl_t * const p_ctrl)
+{
+
+    if (1U == p_ctrl->pga_available)
+    {
+        HW_ADC_ADPGADCR0_Set(p_ctrl->p_reg, ADC_ADPGADCR0_DISABLE_PGA);
+        HW_ADC_ADPGACR_Set(p_ctrl->p_reg, ADC_ADPGACR_DISABLE_PGA);
     }
 
     return SSP_SUCCESS;
@@ -869,9 +911,43 @@ static ssp_err_t r_adc_sample_state_cfg_check(adc_instance_ctrl_t * p_ctrl, adc_
         return SSP_SUCCESS;
     }
 }
-#endif /* (1 == ADC_CFG_PARAM_CHECKING_ENABLE) */
 
-#if (1 == ADC_CFG_PARAM_CHECKING_ENABLE)
+/*******************************************************************************************************************//**
+ * @brief   r_adc_infoget_param_check : ADC check the infoGet function parameters
+ *
+ * This function validates the configuration arguments for illegal combinations or options.
+ *
+ * @param[in]  p_ctrl     :  Control Structure
+ * @param[in]  p_adc_info :  User defined structure into which the main infoGet call will populate data
+ *
+ * @retval  SSP_SUCCESS -       Successful
+ * @retval  SSP_ERR_INVALID_ARGUMENT -  ADC is configured for Group mode which infoGet does not support
+ * @retval  SSP_ERR_ASSERTION -        The parameter p_ctrl or p_adc_info or p_ctrl->p_reg is NULL.
+ * @retval  SSP_ERR_NOT_OPEN -         The driver is not initialized.
+***********************************************************************************************************************/
+static ssp_err_t r_adc_infoget_param_check(adc_instance_ctrl_t * p_ctrl, adc_info_t * p_adc_info)
+{
+    ssp_err_t err = SSP_SUCCESS;
+    /**Ensure that the pointers are valid */
+    SSP_ASSERT (NULL != p_ctrl);
+    SSP_ASSERT (NULL != p_adc_info);
+
+    /** Ensure ADC Unit is already open  */
+    if (ADC_OPEN != p_ctrl->opened)
+    {
+        return SSP_ERR_NOT_OPEN;
+    }
+
+    /** Return an error if mode is Group Mode since that is not
+     * supported currently */
+    if (ADC_MODE_GROUP_SCAN == p_ctrl->mode)
+    {
+        return SSP_ERR_INVALID_ARGUMENT;
+    }
+    SSP_ASSERT (NULL != p_ctrl->p_reg);
+
+    return err;
+}
 /*******************************************************************************************************************//**
  * @brief   r_adc_open_cfg_check : ADC check open function configuration
  *

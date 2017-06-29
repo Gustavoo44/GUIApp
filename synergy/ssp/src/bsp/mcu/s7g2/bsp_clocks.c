@@ -55,8 +55,8 @@ Macro definitions
 #define CGC_SRAM_ONE_WAIT_CYCLES  (1U)              ///< Specify one wait states for SRAM
 
 #define CGC_SRAM_PRCR_KEY                 (0x78U)
-#define CGC_SRAM_UNLOCK                   ((CGC_SRAM_PRCR_KEY) | 0x1U)
-#define CGC_SRAM_LOCK                     ((CGC_SRAM_PRCR_KEY) | 0x0U)
+#define CGC_SRAM_UNLOCK                   (((CGC_SRAM_PRCR_KEY) << 1) | 0x1U)
+#define CGC_SRAM_LOCK                     (((CGC_SRAM_PRCR_KEY) << 1) | 0x0U)
 
 /***********************************************************************************************************************
 Typedef definitions

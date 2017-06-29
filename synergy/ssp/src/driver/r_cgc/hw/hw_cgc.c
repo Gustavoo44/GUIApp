@@ -1225,4 +1225,18 @@ bool HW_CGC_LCDClockIsEnabled (R_SYSTEM_Type * p_system_reg)
     }
 }
 
+/*******************************************************************************************************************//**
+ * @brief      This function sets the HOCO wait time register
+ * @param[in]  HOCOWTCR HSTS setting
+ * @retval     none
+ **********************************************************************************************************************/
+
+void HW_CGC_HocoWaitControlSet (R_SYSTEM_Type * p_system_reg, uint8_t hoco_wait)
+{
+    /* Set the system clock source */
+    HW_CGC_HardwareUnLock();
+    /* Set HOCOWTCR_b.HSTS */
+    p_system_reg->HOCOWTCR_b.HSTS = 0x7U & hoco_wait;
+    HW_CGC_HardwareLock();
+}
 

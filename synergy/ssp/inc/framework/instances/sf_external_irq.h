@@ -53,7 +53,7 @@ SSP_HEADER
  * Macro definitions
  **********************************************************************************************************************/
 #define SF_EXTERNAL_IRQ_CODE_VERSION_MAJOR (1U)
-#define SF_EXTERNAL_IRQ_CODE_VERSION_MINOR (3U)
+#define SF_EXTERNAL_IRQ_CODE_VERSION_MINOR (4U)
 
 /**********************************************************************************************************************
  * Typedef definitions

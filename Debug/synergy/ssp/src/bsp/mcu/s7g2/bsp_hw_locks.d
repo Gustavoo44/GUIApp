@@ -1,128 +1,128 @@
 synergy/ssp/src/bsp/mcu/s7g2/bsp_hw_locks.o: \
  ../synergy/ssp/src/bsp/mcu/s7g2/bsp_hw_locks.c \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp/bsp_api.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_common_api.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_version.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_cfg.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_clock_cfg.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_mcu_family_cfg.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_pn_cfg.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_cfg.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\s7g2\bsp_mcu_info.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\s7g2.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cm4.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cmInstr.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cmFunc.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cm4_simd.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\system_S7G2.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\s7g2\bsp_elc.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\s7g2\bsp_cache.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_board_cfg.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp_init.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp_leds.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp_qspi.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_common.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_common_api.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_register_protection.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_locking.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_irq.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_group_irq.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_clocks.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\driver\api/r_ioport_api.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_features.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_common_api.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\driver\instances/r_fmi.h \
- C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\driver\api/r_fmi_api.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_common_leds.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_delay.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_common.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_feature.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_mcu_api.h \
- c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_error_checking.h
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp/bsp_api.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_common_api.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_version.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_cfg.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_clock_cfg.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_mcu_family_cfg.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_pn_cfg.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_cfg.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\s7g2\bsp_mcu_info.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\s7g2.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cm4.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cmInstr.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cmFunc.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cm4_simd.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\system_S7G2.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\s7g2\bsp_elc.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\s7g2\bsp_cache.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_board_cfg.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp_init.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp_leds.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp_qspi.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_common.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_common_api.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_register_protection.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_locking.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_irq.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_group_irq.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_clocks.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\driver\api/r_ioport_api.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_features.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_common_api.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\driver\instances/r_fmi.h \
+ C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\driver\api/r_fmi_api.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_common_leds.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_delay.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_common.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_feature.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_mcu_api.h \
+ c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_error_checking.h
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp/bsp_api.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp/bsp_api.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_common_api.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_common_api.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_version.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_version.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_cfg.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_cfg.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_clock_cfg.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_clock_cfg.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_mcu_family_cfg.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_mcu_family_cfg.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_pn_cfg.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_pn_cfg.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_cfg.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_mcu_device_cfg.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\s7g2\bsp_mcu_info.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\s7g2\bsp_mcu_info.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\s7g2.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\s7g2.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cm4.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cm4.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cmInstr.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cmInstr.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cmFunc.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cmFunc.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\bsp\cmsis\Include/core_cm4_simd.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\bsp\cmsis\Include/core_cm4_simd.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\system_S7G2.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\cmsis\device\renesas\s7g2\include\system_S7G2.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\s7g2\bsp_elc.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\s7g2\bsp_elc.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\s7g2\bsp_cache.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\s7g2\bsp_cache.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy_cfg\ssp_cfg\bsp/bsp_board_cfg.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy_cfg\ssp_cfg\bsp/bsp_board_cfg.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp_init.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp_init.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp_leds.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp_leds.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\board\s7g2_sk\bsp_qspi.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\board\s7g2_sk\bsp_qspi.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_common.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_common.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_common_api.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_common_api.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_register_protection.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_register_protection.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_locking.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_locking.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_irq.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_irq.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_group_irq.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_group_irq.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_clocks.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_clocks.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\driver\api/r_ioport_api.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\driver\api/r_ioport_api.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_features.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_features.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\inc\ssp_common_api.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\inc\ssp_common_api.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_compiler_support.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\driver\instances/r_fmi.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\driver\instances/r_fmi.h:
 
-C:\Users\Dell\e2_studio\workspace\GUIApp\synergy\ssp\inc\driver\api/r_fmi_api.h:
+C:\Users\Eude\ Soares\e2_studio\workspace\Gui\synergy\ssp\inc\driver\api/r_fmi_api.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_common_leds.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_common_leds.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_delay.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_delay.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_common.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_common.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_feature.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_feature.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_mcu_api.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_mcu_api.h:
 
-c:\users\dell\e2_studio\workspace\guiapp\synergy\ssp\src\bsp\mcu\all\bsp_error_checking.h:
+c:\users\eude\ soares\e2_studio\workspace\gui\synergy\ssp\src\bsp\mcu\all\bsp_error_checking.h:

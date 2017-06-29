@@ -122,10 +122,16 @@ Private global variables and functions
  *
  * @param[out] p_version Memory address to return version information to.
  *
- * @retval SSP_SUCCESS Version information stored.
+ * @retval SSP_SUCCESS          Version information stored.
+ * @retval SSP_ERR_ASSERTION    The parameter p_version is NULL.
  **********************************************************************************************************************/
 ssp_err_t R_BSP_VersionGet (ssp_version_t * p_version)
 {
+#if BSP_CFG_PARAM_CHECKING_ENABLE
+    /** Verify parameters are valid */
+    SSP_ASSERT(NULL != p_version);
+#endif
+
     p_version->api_version_major  = BSP_API_VERSION_MAJOR;
     p_version->api_version_minor  = BSP_API_VERSION_MINOR;
     p_version->code_version_major = BSP_CODE_VERSION_MAJOR;
@@ -139,10 +145,16 @@ ssp_err_t R_BSP_VersionGet (ssp_version_t * p_version)
  *
  * @param[out] p_version Memory address to return version information to.
  *
- * @retval SSP_SUCCESS Version information stored.
+ * @retval SSP_SUCCESS          Version information stored.
+ * @retval SSP_ERR_ASSERTION    The parameter p_version is NULL.
  **********************************************************************************************************************/
 ssp_err_t R_SSP_VersionGet (ssp_pack_version_t * const p_version)
 {
+#if BSP_CFG_PARAM_CHECKING_ENABLE
+    /** Verify parameters are valid */
+    SSP_ASSERT(NULL != p_version);
+#endif
+
     *p_version = g_ssp_version;
 
     return SSP_SUCCESS;

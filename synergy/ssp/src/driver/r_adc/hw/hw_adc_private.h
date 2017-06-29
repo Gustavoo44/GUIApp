@@ -51,6 +51,10 @@ Macro definitions
 /** Sample and hold bypass starts at bit 8. */
 #define ADC_MASK_SAMPLE_HOLD_BYPASS_SHIFT     (9U)
 
+/** Value for ADPGADCR0 to disable PGA */
+#define ADC_ADPGADCR0_DISABLE_PGA (0x0000)
+/** Value for ADPGACR to disable PGA */
+#define ADC_ADPGACR_DISABLE_PGA   (0x9999)
 /**********************************************************************************************************************
 Typedef definitions
 ***********************************************************************************************************************/
@@ -193,12 +197,12 @@ __STATIC_INLINE void HW_ADC_SampleStateRegSet(ADC_BASE_PTR p_regs, adc_sample_st
     p_regs->ADSSTR0n[reg_id] = num_states;
 }
 
-__STATIC_INLINE uint16_t const volatile * HW_ADC_ResultRegAddrGet(ADC_BASE_PTR p_regs, uint32_t index)
+__STATIC_INLINE uint16_t const volatile * HW_ADC_ResultRegAddrGet(ADC_BASE_PTR p_regs, int32_t index)
 {
     return (&p_regs->ADDRn[index]);
 }
 
-__STATIC_INLINE adc_data_size_t HW_ADC_ResultGet(ADC_BASE_PTR p_regs, uint32_t index)
+__STATIC_INLINE adc_data_size_t HW_ADC_ResultGet(ADC_BASE_PTR p_regs, int32_t index)
 {
     return (adc_data_size_t) p_regs->ADDRn[index];
 }
@@ -325,7 +329,14 @@ __STATIC_INLINE void HW_ADC_TempSensorDisable(R_TSN_Type * p_tsn_regs)
 {
     p_tsn_regs->TSCR = 0UL;
 }
-
+__STATIC_INLINE void HW_ADC_ADPGADCR0_Set(ADC_BASE_PTR p_regs, uint16_t value)
+{
+    p_regs->ADPGADCR0 = value;
+}
+__STATIC_INLINE void HW_ADC_ADPGACR_Set(ADC_BASE_PTR p_regs, uint16_t value)
+{
+    p_regs->ADPGACR = value;
+}
 /** Common macro for SSP header files. There is also a corresponding SSP_HEADER macro at the top of this file. */
 SSP_FOOTER
 

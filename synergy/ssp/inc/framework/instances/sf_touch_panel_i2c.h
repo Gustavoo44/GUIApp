@@ -55,7 +55,7 @@ SSP_HEADER
  * Macro definitions
  **********************************************************************************************************************/
 #define SF_TOUCH_PANEL_I2C_CODE_VERSION_MAJOR (1U)
-#define SF_TOUCH_PANEL_I2C_CODE_VERSION_MINOR (3U)
+#define SF_TOUCH_PANEL_I2C_CODE_VERSION_MINOR (4U)
 
 #define SF_TOUCH_PANEL_I2C_RESET_PIN_UNUSED   (0xFFFF)
 

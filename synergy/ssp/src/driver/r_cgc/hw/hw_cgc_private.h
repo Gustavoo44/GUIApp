@@ -194,6 +194,8 @@ uint32_t      HW_CGC_ROMWaitGet (R_SYSTEM_Type * p_system_reg);
 
 bool          HW_CGC_SystickUpdate(uint32_t ticks_per_second);
 
+void          HW_CGC_HocoWaitControlSet (R_SYSTEM_Type * p_system_reg, uint8_t hoco_wait);
+
 /** Common macro for SSP header files. There is also a corresponding SSP_HEADER macro at the top of this file. */
 SSP_FOOTER
 

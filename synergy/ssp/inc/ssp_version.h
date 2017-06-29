@@ -40,22 +40,22 @@
  * Macro definitions
  **********************************************************************************************************************/
 /** SSP pack major version. */
-#define SSP_VERSION_MAJOR                   (1)
+#define SSP_VERSION_MAJOR                   (1U)
 
 /** SSP pack minor version. */
-#define SSP_VERSION_MINOR                   (2)
+#define SSP_VERSION_MINOR                   (2U)
 
 /** SSP pack patch version. */
-#define SSP_VERSION_PATCH                   (0)
+#define SSP_VERSION_PATCH                   (1U)
 
 /** SSP pack version build number (currently unused). */
 #define SSP_VERSION_BUILD                   (0U)
 
 /** Public SSP version name. */
-#define SSP_VERSION_STRING                  ("1.2.0")
+#define SSP_VERSION_STRING                  ("1.2.1")
 
 /** Unique SSP version ID. */
-#define SSP_VERSION_BUILD_STRING            ("Built with Renesas Synergy (TM) Software Package version 1.2.0+build.5d6a10bde0b5")
+#define SSP_VERSION_BUILD_STRING            ("Built with Renesas Synergy (TM) Software Package version 1.2.1+build.6413891f50a1")
 
 /**********************************************************************************************************************
  * Typedef definitions

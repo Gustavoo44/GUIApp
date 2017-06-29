@@ -395,8 +395,6 @@ void icu_irq_isr (void)
     /* Save context if RTOS is used */
     SF_CONTEXT_SAVE
 
-    R_BSP_IrqStatusClear (R_SSP_CurrentIrqGet());
-
     ssp_vector_info_t * p_vector_info = NULL;
     R_SSP_VectorInfoGet(R_SSP_CurrentIrqGet(), &p_vector_info);
     icu_instance_ctrl_t * p_ctrl = (icu_instance_ctrl_t *) *(p_vector_info->pp_ctrl);
@@ -409,6 +407,9 @@ void icu_irq_isr (void)
         args.p_context = p_ctrl->p_context;
         p_ctrl->p_callback(&args);
     }
+
+    /* Clearing the IR bit must be done after clearing the interrupt source in the the peripheral */
+    R_BSP_IrqStatusClear(R_SSP_CurrentIrqGet());
 
     /* Restore context if RTOS is used */
     SF_CONTEXT_RESTORE

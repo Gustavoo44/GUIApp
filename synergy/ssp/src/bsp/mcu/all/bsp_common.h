@@ -58,7 +58,7 @@ Macro definitions
 
 /* Version of this module's code and API. */
 #define BSP_CODE_VERSION_MAJOR      (1U)
-#define BSP_CODE_VERSION_MINOR      (5U)
+#define BSP_CODE_VERSION_MINOR      (6U)
 #define BSP_API_VERSION_MAJOR       (1U)
 #define BSP_API_VERSION_MINOR       (0U)
 
@@ -84,18 +84,18 @@ void  tx_isr_end(unsigned long isr_id);
  * user code and do required debugging (breakpoints, stack dump, etc) in this function.*/
 #if (1 == BSP_CFG_ERROR_LOG)
 #ifndef SSP_ERROR_LOG
-/*LDRA_INSPECTED 77 S This macro does not work when surrounded by parentheses. */
 #define SSP_ERROR_LOG(err, module, version)     SSP_PARAMETER_NOT_USED((version));          \
                                                 ssp_error_log((err), (module), __LINE__);
 #endif
 #else
+/*LDRA_INSPECTED 340 S. Function-like macro used here to allow usage of a standard error logger which extracts module name and line number in a module without adding "#if SSP_ERROR_LOG". */
 #define SSP_ERROR_LOG(err, module, version)
 #endif
 
 /** Default assertion calls ::SSP_ASSERT_FAIL if condition "a" is false. Used to identify incorrect use of API's in SSP
  * functions. */
 #if (2 == BSP_CFG_ASSERT)
-#define SSP_ASSERT(a)   assert(a)
+#define SSP_ASSERT(a)   {assert(a);}
 #else
 /*LDRA_INSPECTED 77 S This macro does not work when surrounded by parentheses. */
 #define SSP_ASSERT(a)                 \
