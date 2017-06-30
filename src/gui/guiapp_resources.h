@@ -6,7 +6,7 @@
 /*  site at www.expresslogic.com.                                              */
 /*                                                                             */
 /*  GUIX Studio Revision 5.3.3.0                                               */
-/*  Date (dd.mm.yyyy): 28. 6.2017   Time (hh:mm): 13:35                        */
+/*  Date (dd.mm.yyyy): 29. 6.2017   Time (hh:mm): 17:53                        */
 /*******************************************************************************/
 
 
@@ -71,7 +71,8 @@
 #define GX_PIXELMAP_ID_RADIO_OFF 2
 #define GX_PIXELMAP_ID_CHECKBOX_ON 3
 #define GX_PIXELMAP_ID_CHECKBOX_OFF 4
-#define DISPLAY_1_PIXELMAP_TABLE_SIZE 5
+#define GX_PIXELMAP_ID_LOGO 5
+#define DISPLAY_1_PIXELMAP_TABLE_SIZE 6
 
 /* String Ids                                                                  */
 
@@ -89,6 +90,17 @@
 #define GX_STRING_ID_STRING_6 12
 #define GX_STRING_ID_STRING_4 13
 #define GX_STRING_ID_STRING_5 14
-#define DISPLAY_1_STRING_TABLE_SIZE 15
+#define GX_STRING_ID_STRING_7 15
+#define GX_STRING_ID_STRING_8 16
+#define GX_STRING_ID_STRING_9 17
+#define GX_STRING_ID_STRING_10 18
+#define GX_STRING_ID_STRING_11 19
+#define GX_STRING_ID_STRING_12 20
+#define GX_STRING_ID_STRING_13 21
+#define GX_STRING_ID_STRING_14 22
+#define GX_STRING_ID_STRING_15 23
+#define GX_STRING_ID_STRING_16 24
+#define GX_STRING_ID_STRING_17 25
+#define DISPLAY_1_STRING_TABLE_SIZE 26
 
 #endif                                       /* sentry                         */

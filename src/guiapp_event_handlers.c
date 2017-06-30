@@ -13,43 +13,33 @@ static UINT show_window(GX_WINDOW * p_new, GX_WIDGET * p_widget, bool detach_old
 static void update_text_id(GX_WIDGET * p_widget, GX_RESOURCE_ID id, UINT string_id);
 
 
-UINT window1_handler(GX_WINDOW *widget, GX_EVENT *event_ptr)
+UINT main_window_handler(GX_WINDOW *widget, GX_EVENT *event_ptr)
 {
     UINT result = gx_window_event_process(widget, event_ptr);
 
-
     switch (event_ptr->gx_event_type)
     {
-    case GX_SIGNAL(ID_BUTTONENABLER, GX_EVENT_TOGGLE_ON):
-        button_enabled = true;
-        update_text_id(widget->gx_widget_parent, ID_WINDOWCHANGER, GX_STRING_ID_BUTTON_ENABLED);
-        update_text_id(widget->gx_widget_parent, ID_INSTRUCTIONS, GX_STRING_ID_INSTRUCT_BUTTON);
-        break;
-    case GX_SIGNAL(ID_BUTTONENABLER, GX_EVENT_TOGGLE_OFF):
-        button_enabled = false;
-        update_text_id(widget->gx_widget_parent, ID_WINDOWCHANGER, GX_STRING_ID_BUTTON_DISABLED);
-        update_text_id(widget->gx_widget_parent, ID_INSTRUCTIONS, GX_STRING_ID_INSTRUCT_CHECKBOX);
-        break;
-    case GX_SIGNAL(ID_WINDOWCHANGER, GX_EVENT_CLICKED):
-        if(button_enabled){
-            show_window((GX_WINDOW*)&window2, (GX_WIDGET*)widget, true);
-        }
-        break;
-    default:
-        gx_window_event_process(widget, event_ptr);
-        break;
+        case GX_SIGNAL(ENSAIO_BUTTON, GX_EVENT_CLICKED):
+            show_window((GX_WINDOW*)&ensaio_window, (GX_WIDGET*)widget, true);
+            break;
+        case GX_SIGNAL(CONFIG_BUTTON, GX_EVENT_CLICKED):
+            show_window((GX_WINDOW*)&ensaio_window, (GX_WIDGET*)widget, true);
+            break;
+        default:
+            gx_window_event_process(widget, event_ptr);
+            break;
     }
 
     return result;
 }
 
-UINT window2_handler(GX_WINDOW *widget, GX_EVENT *event_ptr)
+UINT ensaio_window_handler(GX_WINDOW *widget, GX_EVENT *event_ptr)
 {
     UINT result = gx_window_event_process(widget, event_ptr);
 
     switch (event_ptr->gx_event_type){
-        case GX_EVENT_PEN_UP:
-            show_window((GX_WINDOW*)&window1, (GX_WIDGET*)widget, true);
+        case GX_SIGNAL(MENU_BUTTON, GX_EVENT_CLICKED):
+            show_window((GX_WINDOW*)&main_window, (GX_WIDGET*)widget, true);
             break;
         default:
             result = gx_window_event_process(widget, event_ptr);

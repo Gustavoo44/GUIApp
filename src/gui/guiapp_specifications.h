@@ -6,7 +6,7 @@
 /*  www.expresslogic.com.                                                      */
 /*                                                                             */
 /*  GUIX Studio Revision 5.3.3.0                                               */
-/*  Date (dd.mm.yyyy): 28. 6.2017   Time (hh:mm): 13:35                        */
+/*  Date (dd.mm.yyyy): 29. 6.2017   Time (hh:mm): 17:53                        */
 /*******************************************************************************/
 
 
@@ -22,18 +22,20 @@ extern   "C" {
 
 /* Define widget ids                                                           */
 
-#define ID_WINDOW2 1
-#define ID_HELLO 2
-#define ID_WINDOW2_TEXT 3
-#define ID_PRT_FORCA 4
+#define CONFIG_WINDOW 1
+#define ENSAIO_WINDOW 2
+#define ID_PRT_FORCA 3
+#define PTR_FORCA_LABEL 4
 #define ID_PRT_MEDIA 5
-#define ID_WINDOW1 6
-#define ID_BUTTONENABLER 7
-#define ID_INSTRUCTIONS 8
-#define ID_WINDOWCHANGER 9
-#define ID_WINDOW1_TEXT 10
-#define ID_CB_NEWTON 11
-#define ID_PRT_S_FORCA 12
+#define PTR_MEDIA_LABEL 6
+#define INICIAR_BUTTON 7
+#define ENSAIO_WINDOW_TEXT 8
+#define MENU_BUTTON 9
+#define MAIN_WINDOW 10
+#define MAIN_WINDOW_TEXT 11
+#define CONFIG_BUTTON 12
+#define ENSAIO 13
+#define ENSAIO_BUTTON 14
 
 
 /* Declare properties structures for each utilized widget type                 */
@@ -81,18 +83,6 @@ typedef struct
     GX_RESOURCE_ID font_id;
     GX_RESOURCE_ID normal_text_color_id;
     GX_RESOURCE_ID selected_text_color_id;
-    GX_RESOURCE_ID unchecked_pixelmap_id;
-    GX_RESOURCE_ID checked_pixelmap_id;
-    GX_RESOURCE_ID unchecked_disabled_pixelmap_id;
-    GX_RESOURCE_ID checked_disabled_pixelmap_id;
-} GX_CHECKBOX_PROPERTIES;
-
-typedef struct
-{
-    GX_RESOURCE_ID string_id;
-    GX_RESOURCE_ID font_id;
-    GX_RESOURCE_ID normal_text_color_id;
-    GX_RESOURCE_ID selected_text_color_id;
 } GX_PROMPT_PROPERTIES;
 
 typedef struct
@@ -103,32 +93,39 @@ typedef struct
 
 /* Declare top-level control blocks                                            */
 
-typedef struct WINDOW2_CONTROL_BLOCK_STRUCT
+typedef struct CONFIG_WINDOW_CONTROL_BLOCK_STRUCT
 {
     GX_WINDOW_MEMBERS_DECLARE
-    GX_PROMPT window2_hellotext;
-    GX_PROMPT window2_window2_text;
-    GX_PROMPT window2_prt_forca;
-    GX_PROMPT window2_prt_media;
-} WINDOW2_CONTROL_BLOCK;
+} CONFIG_WINDOW_CONTROL_BLOCK;
 
-typedef struct WINDOW1_CONTROL_BLOCK_STRUCT
+typedef struct ENSAIO_WINDOW_CONTROL_BLOCK_STRUCT
 {
     GX_WINDOW_MEMBERS_DECLARE
-    GX_CHECKBOX window1_buttonenabler;
-    GX_PROMPT window1_instructions;
-    GX_TEXT_BUTTON window1_windowchanger;
-    GX_PROMPT window1_window1_text;
-    GX_CHECKBOX window1_cb_newton;
-    GX_PROMPT window1_prt_s_forca;
-} WINDOW1_CONTROL_BLOCK;
+    GX_PROMPT ensaio_window_prt_forca;
+    GX_PROMPT ensaio_window_ptr_forca_label;
+    GX_PROMPT ensaio_window_prt_media;
+    GX_PROMPT ensaio_window_ptr_media_label;
+    GX_TEXT_BUTTON ensaio_window_inicriar_button;
+    GX_PROMPT ensaio_window_ensaio_window_text;
+    GX_TEXT_BUTTON ensaio_window_menu_button;
+} ENSAIO_WINDOW_CONTROL_BLOCK;
+
+typedef struct MAIN_WINDOW_CONTROL_BLOCK_STRUCT
+{
+    GX_WINDOW_MEMBERS_DECLARE
+    GX_PROMPT main_window_main_windows_text;
+    GX_TEXT_BUTTON main_window_config_button;
+    GX_TEXT_BUTTON main_window_iniciar_ensaio_2;
+    GX_TEXT_BUTTON main_window_ensaio_button;
+} MAIN_WINDOW_CONTROL_BLOCK;
 
 
 /* extern statically defined control blocks                                    */
 
 #ifndef GUIX_STUDIO_GENERATED_FILE
-extern WINDOW2_CONTROL_BLOCK window2;
-extern WINDOW1_CONTROL_BLOCK window1;
+extern CONFIG_WINDOW_CONTROL_BLOCK config_window;
+extern ENSAIO_WINDOW_CONTROL_BLOCK ensaio_window;
+extern MAIN_WINDOW_CONTROL_BLOCK main_window;
 #endif
 
 /* Prototype Synergy display driver specific functions                         */
@@ -190,8 +187,8 @@ VOID _gx_synergy_jpeg_draw (GX_DRAW_CONTEXT *p_context, INT x, INT y, GX_PIXELMA
 
 /* Declare event process functions, draw functions, and callback functions     */
 
-UINT window2_handler(GX_WINDOW *widget, GX_EVENT *event_ptr);
-UINT window1_handler(GX_WINDOW *widget, GX_EVENT *event_ptr);
+UINT ensaio_window_handler(GX_WINDOW *widget, GX_EVENT *event_ptr);
+UINT main_window_handler(GX_WINDOW *widget, GX_EVENT *event_ptr);
 
 /* Declare the GX_STUDIO_DISPLAY_INFO structure                                */
 
@@ -217,7 +214,6 @@ typedef struct GX_STUDIO_DISPLAY_INFO_STRUCT
 /* Declare Studio-generated functions for creating top-level widgets           */
 
 UINT gx_studio_text_button_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *control_block, GX_WIDGET *parent);
-UINT gx_studio_checkbox_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *control_block, GX_WIDGET *parent);
 UINT gx_studio_prompt_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *control_block, GX_WIDGET *parent);
 UINT gx_studio_window_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *control_block, GX_WIDGET *parent);
 UINT gx_studio_widget_create(GX_BYTE *storage, GX_CONST GX_STUDIO_WIDGET *definition, GX_WIDGET *parent);

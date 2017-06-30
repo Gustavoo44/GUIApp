@@ -131,7 +131,7 @@ void main_thread_entry(void) {
         // We must first create the widgets according the data generated in GUIX Studio.
 
         // Once we are working on the widget we want to see first, save the pointer for later.
-        if (0 == strcmp("window1", (char*)(*pp_studio_widget)->widget_name))
+        if (0 == strcmp("main_window", (char*)(*pp_studio_widget)->widget_name))
         {
             gx_studio_named_widget_create((*pp_studio_widget)->widget_name, (GX_WIDGET *)p_window_root, GX_NULL);
         } else {
@@ -202,27 +202,26 @@ void main_thread_entry(void) {
     }
 #endif
 
-    /* Set the prompt pointer to txt_counter widget */
-    status = gx_system_widget_find(ID_PRT_S_FORCA, GX_SEARCH_DEPTH_INFINITE, (GX_WIDGET **) &p_prompt);
-    if (status)
-            while (1){
-                toggle_led(2);
-            }
-
-    /* Attach txt_buffer to txt_counter widget */
-    status = gx_prompt_text_set(p_prompt, txt_buffer);
-    if (status)
-        while (1){
-            toggle_led(2);
-        }
-
-    tx_thread_sleep(100);
+//    /* Set the prompt pointer to txt_counter widget */
+//    status = gx_system_widget_find(ID_PRT_S_FORCA, GX_SEARCH_DEPTH_INFINITE, (GX_WIDGET **) &p_prompt);
+//    if (status)
+//            while (1){
+//                toggle_led(2);
+//            }
+//
+//    /* Attach txt_buffer to txt_counter widget */
+//    status = gx_prompt_text_set(p_prompt, txt_buffer);
+//    if (status)
+//        while (1){
+//            toggle_led(2);
+//        }
+//
+//    tx_thread_sleep(100);
 
     /*-----------------------------------------Loop Principal------------------------------------------------*/
 	while(1)
 	{
 		bool new_gui_event = false;
-
 		err = g_sf_message0.p_api->pend(g_sf_message0.p_ctrl, &main_thread_message_queue, (sf_message_header_t **) &p_message, TX_NO_WAIT);
 		if (err)
 		{
@@ -265,18 +264,18 @@ void main_thread_entry(void) {
 
 		/* Convert current counter value to string */
         gx_utility_ltoa((LONG) media_R, txt_buffer, 5);
-
-
-        /* Let GUIX know that txt_counter should be re-drawn */
-        status = gx_system_dirty_mark((GX_WIDGET *) p_prompt);
-        if (status){
-            while (1){
-                toggle_led(2);
-            }
-        }
-        /* Force re-draw all "dirty" widgets */
-        gx_system_canvas_refresh();
-        //toggle_led(2);
+//
+//
+//        /* Let GUIX know that txt_counter should be re-drawn */
+//        status = gx_system_dirty_mark((GX_WIDGET *) p_prompt);
+//        if (status){
+//            while (1){
+//                toggle_led(2);
+//            }
+//        }
+//        /* Force re-draw all "dirty" widgets */
+//        gx_system_canvas_refresh();
+//        //toggle_led(2);
         tx_thread_sleep(10);
 
 	}

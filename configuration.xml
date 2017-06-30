@@ -205,6 +205,7 @@
     <subscriber context="rtos.threadx.thread.239426899" end="0" id="subscriber.102924134" start="0">
       <subscribe eventClass="module.framework.sf_touch_panel.eventClass.eventClassTouch"/>
     </subscriber>
+    <subscriber context="rtos.threadx.thread.269214182" end="0" id="subscriber.1312004779" start="0"/>
   </synergyMessagingConfiguration>
   <synergyModuleConfiguration>
     <module id="module.driver.cgc_on_cgc.1335811009">

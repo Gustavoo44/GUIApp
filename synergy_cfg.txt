@@ -739,3 +739,5 @@ Synergy Configuration
     Subscriber "Main Thread" 0 0
       Event Class "Touch"
       
+    Subscriber "Teste_Thread" 0 0
+      
