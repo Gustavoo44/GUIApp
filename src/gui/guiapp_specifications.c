@@ -6,7 +6,7 @@
 /*  www.expresslogic.com.                                                      */
 /*                                                                             */
 /*  GUIX Studio Revision 5.3.3.0                                               */
-/*  Date (dd.mm.yyyy): 28. 6.2017   Time (hh:mm): 13:35                        */
+/*  Date (dd.mm.yyyy): 29. 6.2017   Time (hh:mm): 17:53                        */
 /*******************************************************************************/
 
 
@@ -15,8 +15,9 @@
 #include "guiapp_resources.h"
 #include "guiapp_specifications.h"
 
-WINDOW2_CONTROL_BLOCK window2;
-WINDOW1_CONTROL_BLOCK window1;
+CONFIG_WINDOW_CONTROL_BLOCK config_window;
+ENSAIO_WINDOW_CONTROL_BLOCK ensaio_window;
+MAIN_WINDOW_CONTROL_BLOCK main_window;
 
 UINT gx_studio_text_button_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *control_block, GX_WIDGET *parent)
 {
@@ -28,33 +29,6 @@ UINT gx_studio_text_button_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *co
     {
         gx_text_button_font_set(button, props->font_id);
         gx_text_button_text_color_set(button, props->normal_text_color_id, props->selected_text_color_id);
-    }
-    return status;
-}
-
-UINT gx_studio_checkbox_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *control_block, GX_WIDGET *parent)
-{
-    UINT status;
-    GX_CHECKBOX *button = (GX_CHECKBOX *) control_block;
-    GX_TEXT_BUTTON *text_button = (GX_TEXT_BUTTON *) button;
-    GX_CHECKBOX_PROPERTIES *props = (GX_CHECKBOX_PROPERTIES *) info->properties;
-    status = gx_checkbox_create(button, info->widget_name, parent, props->string_id, info->style, info->widget_id, &info->size);
-    if (status == GX_SUCCESS)
-    {
-        gx_text_button_font_set(text_button, props->font_id);
-        gx_text_button_text_color_set(text_button, props->normal_text_color_id, props->selected_text_color_id);
-
-        if (props->unchecked_pixelmap_id ||
-            props->checked_pixelmap_id ||
-            props->unchecked_disabled_pixelmap_id ||
-            props->checked_disabled_pixelmap_id)
-        {
-            gx_checkbox_pixelmap_set(button,
-                                     props->unchecked_pixelmap_id,
-                                     props->checked_pixelmap_id,
-                                     props->unchecked_disabled_pixelmap_id,
-                                     props->checked_disabled_pixelmap_id);
-        }
     }
     return status;
 }
@@ -88,40 +62,203 @@ UINT gx_studio_window_create(GX_CONST GX_STUDIO_WIDGET *info, GX_WIDGET *control
     }
     return status;
 }
-GX_WINDOW_PROPERTIES window2_properties =
+GX_WINDOW_PROPERTIES config_window_properties =
 {
     0                                        /* wallpaper pixelmap id          */
 };
-GX_PROMPT_PROPERTIES window2_hellotext_properties =
+
+GX_CONST GX_STUDIO_WIDGET config_window_define =
 {
-    GX_STRING_ID_HELLO_WORLD,                /* string id                      */
-    GX_FONT_ID_PROMPT,                       /* font id                        */
-    GX_COLOR_ID_TEXT,                        /* normal text color              */
-    GX_COLOR_ID_SELECTED_TEXT                /* selected text color            */
+    "config_window",
+    GX_TYPE_WINDOW,                          /* widget type                    */
+    CONFIG_WINDOW,                           /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_THIN,                    /* style flags                    */
+    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
+    104,                                     /* control block size             */
+    GX_COLOR_ID_WINDOW_FILL,                 /* normal color id                */
+    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
+    gx_studio_window_create,                 /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {0, 0, 239, 319},                        /* widget size                    */
+    GX_NULL,                                 /* next widget                    */
+    GX_NULL,                                 /* child widget                   */
+    0,                                       /* control block                  */
+    (void *) &config_window_properties       /* extended properties            */
 };
-GX_PROMPT_PROPERTIES window2_window2_text_properties =
+GX_WINDOW_PROPERTIES ensaio_window_properties =
 {
-    GX_STRING_ID_WINDOW2,                    /* string id                      */
-    GX_FONT_ID_PROMPT,                       /* font id                        */
-    GX_COLOR_ID_TEXT,                        /* normal text color              */
-    GX_COLOR_ID_SELECTED_TEXT                /* selected text color            */
+    0                                        /* wallpaper pixelmap id          */
 };
-GX_PROMPT_PROPERTIES window2_prt_forca_properties =
+GX_PROMPT_PROPERTIES ensaio_window_prt_forca_properties =
 {
     GX_STRING_ID_STRING_6,                   /* string id                      */
     GX_FONT_ID_PROMPT,                       /* font id                        */
     GX_COLOR_ID_TEXT,                        /* normal text color              */
     GX_COLOR_ID_WINDOW_BORDER                /* selected text color            */
 };
-GX_PROMPT_PROPERTIES window2_prt_media_properties =
+GX_PROMPT_PROPERTIES ensaio_window_ptr_forca_label_properties =
+{
+    GX_STRING_ID_STRING_16,                  /* string id                      */
+    GX_FONT_ID_TEXT_INPUT,                   /* font id                        */
+    GX_COLOR_ID_SLIDER_GROOVE_BOTTOM,        /* normal text color              */
+    GX_COLOR_ID_WINDOW_FILL                  /* selected text color            */
+};
+GX_PROMPT_PROPERTIES ensaio_window_prt_media_properties =
 {
     GX_STRING_ID_STRING_4,                   /* string id                      */
     GX_FONT_ID_PROMPT,                       /* font id                        */
     GX_COLOR_ID_TEXT,                        /* normal text color              */
     GX_COLOR_ID_SELECTED_TEXT                /* selected text color            */
 };
+GX_PROMPT_PROPERTIES ensaio_window_ptr_media_label_properties =
+{
+    GX_STRING_ID_STRING_16,                  /* string id                      */
+    GX_FONT_ID_TEXT_INPUT,                   /* font id                        */
+    GX_COLOR_ID_SLIDER_GROOVE_BOTTOM,        /* normal text color              */
+    GX_COLOR_ID_WINDOW_FILL                  /* selected text color            */
+};
+GX_TEXT_BUTTON_PROPERTIES ensaio_window_inicriar_button_properties =
+{
+    GX_STRING_ID_BUTTON_DISABLED,            /* string id                      */
+    GX_FONT_ID_BUTTON,                       /* font id                        */
+    GX_COLOR_ID_BTN_TEXT,                    /* normal text color              */
+    GX_COLOR_ID_BTN_TEXT                     /* selected text color            */
+};
+GX_PROMPT_PROPERTIES ensaio_window_ensaio_window_text_properties =
+{
+    GX_STRING_ID_HELLO_WORLD,                /* string id                      */
+    GX_FONT_ID_PROMPT,                       /* font id                        */
+    GX_COLOR_ID_TEXT,                        /* normal text color              */
+    GX_COLOR_ID_SELECTED_TEXT                /* selected text color            */
+};
+GX_TEXT_BUTTON_PROPERTIES ensaio_window_menu_button_properties =
+{
+    GX_STRING_ID_STRING_17,                  /* string id                      */
+    GX_FONT_ID_BUTTON,                       /* font id                        */
+    GX_COLOR_ID_BTN_TEXT,                    /* normal text color              */
+    GX_COLOR_ID_BTN_TEXT                     /* selected text color            */
+};
 
-GX_CONST GX_STUDIO_WIDGET window2_prt_media_define =
+GX_CONST GX_STUDIO_WIDGET ensaio_window_ptr_forca_label_define =
+{
+    "ptr_forca_label",
+    GX_TYPE_PROMPT,                          /* widget type                    */
+    PTR_FORCA_LABEL,                         /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_NONE|GX_STYLE_TRANSPARENT|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
+    100,                                     /* control block size             */
+    GX_COLOR_ID_WIDGET_FILL,                 /* normal color id                */
+    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
+    gx_studio_prompt_create,                 /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {88, 104, 195, 138},                     /* widget size                    */
+    GX_NULL,                                 /* no next widget                 */
+    GX_NULL,                                 /* no child widgets               */ 
+    offsetof(ENSAIO_WINDOW_CONTROL_BLOCK, ensaio_window_ptr_forca_label), /* control block */
+    (void *) &ensaio_window_ptr_forca_label_properties /* extended properties  */
+};
+
+GX_CONST GX_STUDIO_WIDGET ensaio_window_ptr_media_label_define =
+{
+    "ptr_media_label",
+    GX_TYPE_PROMPT,                          /* widget type                    */
+    PTR_MEDIA_LABEL,                         /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_NONE|GX_STYLE_TRANSPARENT|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
+    100,                                     /* control block size             */
+    GX_COLOR_ID_WIDGET_FILL,                 /* normal color id                */
+    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
+    gx_studio_prompt_create,                 /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {88, 169, 195, 203},                     /* widget size                    */
+    GX_NULL,                                 /* no next widget                 */
+    GX_NULL,                                 /* no child widgets               */ 
+    offsetof(ENSAIO_WINDOW_CONTROL_BLOCK, ensaio_window_ptr_media_label), /* control block */
+    (void *) &ensaio_window_ptr_media_label_properties /* extended properties  */
+};
+
+GX_CONST GX_STUDIO_WIDGET ensaio_window_menu_button_define =
+{
+    "menu_button",
+    GX_TYPE_TEXT_BUTTON,                     /* widget type                    */
+    MENU_BUTTON,                             /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_NONE|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    0,                                       /* status flags                   */
+    104,                                     /* control block size             */
+    GX_COLOR_ID_BTN_LOWER,                   /* normal color id                */
+    GX_COLOR_ID_BTN_UPPER,                   /* selected color id              */
+    gx_studio_text_button_create,            /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {28, 261, 102, 310},                     /* widget size                    */
+    GX_NULL,                                 /* no next widget                 */
+    GX_NULL,                                 /* no child widgets               */ 
+    offsetof(ENSAIO_WINDOW_CONTROL_BLOCK, ensaio_window_menu_button), /* control block */
+    (void *) &ensaio_window_menu_button_properties /* extended properties      */
+};
+
+GX_CONST GX_STUDIO_WIDGET ensaio_window_ensaio_window_text_define =
+{
+    "ensaio_window_text",
+    GX_TYPE_PROMPT,                          /* widget type                    */
+    ENSAIO_WINDOW_TEXT,                      /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_NONE|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
+    100,                                     /* control block size             */
+    GX_COLOR_ID_SCROLL_FILL,                 /* normal color id                */
+    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
+    gx_studio_prompt_create,                 /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {20, 21, 219, 58},                       /* widget size                    */
+    &ensaio_window_menu_button_define,       /* next widget definition         */
+    GX_NULL,                                 /* no child widgets               */ 
+    offsetof(ENSAIO_WINDOW_CONTROL_BLOCK, ensaio_window_ensaio_window_text), /* control block */
+    (void *) &ensaio_window_ensaio_window_text_properties /* extended properties */
+};
+
+GX_CONST GX_STUDIO_WIDGET ensaio_window_inicriar_button_define =
+{
+    "inicriar_button",
+    GX_TYPE_TEXT_BUTTON,                     /* widget type                    */
+    INICIAR_BUTTON,                          /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_NONE|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    0,                                       /* status flags                   */
+    104,                                     /* control block size             */
+    GX_COLOR_ID_BTN_LOWER,                   /* normal color id                */
+    GX_COLOR_ID_BTN_UPPER,                   /* selected color id              */
+    gx_studio_text_button_create,            /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {145, 262, 219, 311},                    /* widget size                    */
+    &ensaio_window_ensaio_window_text_define, /* next widget definition        */
+    GX_NULL,                                 /* no child widgets               */ 
+    offsetof(ENSAIO_WINDOW_CONTROL_BLOCK, ensaio_window_inicriar_button), /* control block */
+    (void *) &ensaio_window_inicriar_button_properties /* extended properties  */
+};
+
+GX_CONST GX_STUDIO_WIDGET ensaio_window_prt_media_define =
 {
     "prt_media",
     GX_TYPE_PROMPT,                          /* widget type                    */
@@ -137,14 +274,14 @@ GX_CONST GX_STUDIO_WIDGET window2_prt_media_define =
     gx_studio_prompt_create,                 /* create function                */
     GX_NULL,                                 /* drawing function override      */
     GX_NULL,                                 /* event function override        */
-    {11, 158, 230, 202},                     /* widget size                    */
-    GX_NULL,                                 /* no next widget                 */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW2_CONTROL_BLOCK, window2_prt_media), /* control block       */
-    (void *) &window2_prt_media_properties   /* extended properties            */
+    {11, 159, 230, 203},                     /* widget size                    */
+    &ensaio_window_inicriar_button_define,   /* next widget definition         */
+    &ensaio_window_ptr_media_label_define,   /* child widget definition        */
+    offsetof(ENSAIO_WINDOW_CONTROL_BLOCK, ensaio_window_prt_media), /* control block */
+    (void *) &ensaio_window_prt_media_properties /* extended properties        */
 };
 
-GX_CONST GX_STUDIO_WIDGET window2_prt_forca_define =
+GX_CONST GX_STUDIO_WIDGET ensaio_window_prt_forca_define =
 {
     "prt_forca",
     GX_TYPE_PROMPT,                          /* widget type                    */
@@ -160,64 +297,18 @@ GX_CONST GX_STUDIO_WIDGET window2_prt_forca_define =
     gx_studio_prompt_create,                 /* create function                */
     GX_NULL,                                 /* drawing function override      */
     GX_NULL,                                 /* event function override        */
-    {11, 94, 230, 138},                      /* widget size                    */
-    &window2_prt_media_define,               /* next widget definition         */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW2_CONTROL_BLOCK, window2_prt_forca), /* control block       */
-    (void *) &window2_prt_forca_properties   /* extended properties            */
+    {11, 95, 230, 139},                      /* widget size                    */
+    &ensaio_window_prt_media_define,         /* next widget definition         */
+    &ensaio_window_ptr_forca_label_define,   /* child widget definition        */
+    offsetof(ENSAIO_WINDOW_CONTROL_BLOCK, ensaio_window_prt_forca), /* control block */
+    (void *) &ensaio_window_prt_forca_properties /* extended properties        */
 };
 
-GX_CONST GX_STUDIO_WIDGET window2_window2_text_define =
+GX_CONST GX_STUDIO_WIDGET ensaio_window_define =
 {
-    "window2_text",
-    GX_TYPE_PROMPT,                          /* widget type                    */
-    ID_WINDOW2_TEXT,                         /* widget id                      */
-    #if defined(GX_WIDGET_USER_DATA)
-    0,                                       /* user data                      */
-    #endif
-    GX_STYLE_BORDER_NONE|GX_STYLE_TRANSPARENT|GX_STYLE_TEXT_CENTER,   /* style flags */
-    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
-    100,                                     /* control block size             */
-    GX_COLOR_ID_WIDGET_FILL,                 /* normal color id                */
-    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
-    gx_studio_prompt_create,                 /* create function                */
-    GX_NULL,                                 /* drawing function override      */
-    GX_NULL,                                 /* event function override        */
-    {80, 280, 159, 303},                     /* widget size                    */
-    &window2_prt_forca_define,               /* next widget definition         */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW2_CONTROL_BLOCK, window2_window2_text), /* control block    */
-    (void *) &window2_window2_text_properties /* extended properties           */
-};
-
-GX_CONST GX_STUDIO_WIDGET window2_hellotext_define =
-{
-    "hellotext",
-    GX_TYPE_PROMPT,                          /* widget type                    */
-    ID_HELLO,                                /* widget id                      */
-    #if defined(GX_WIDGET_USER_DATA)
-    0,                                       /* user data                      */
-    #endif
-    GX_STYLE_BORDER_NONE|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
-    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
-    100,                                     /* control block size             */
-    GX_COLOR_ID_WIDGET_FILL,                 /* normal color id                */
-    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
-    gx_studio_prompt_create,                 /* create function                */
-    GX_NULL,                                 /* drawing function override      */
-    GX_NULL,                                 /* event function override        */
-    {20, 20, 219, 57},                       /* widget size                    */
-    &window2_window2_text_define,            /* next widget definition         */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW2_CONTROL_BLOCK, window2_hellotext), /* control block       */
-    (void *) &window2_hellotext_properties   /* extended properties            */
-};
-
-GX_CONST GX_STUDIO_WIDGET window2_define =
-{
-    "window2",
+    "ensaio_window",
     GX_TYPE_WINDOW,                          /* widget type                    */
-    ID_WINDOW2,                              /* widget id                      */
+    ENSAIO_WINDOW,                           /* widget id                      */
     #if defined(GX_WIDGET_USER_DATA)
     0,                                       /* user data                      */
     #endif
@@ -228,142 +319,51 @@ GX_CONST GX_STUDIO_WIDGET window2_define =
     GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
     gx_studio_window_create,                 /* create function                */
     GX_NULL,                                 /* drawing function override      */
-    (UINT (*)(GX_WIDGET *, GX_EVENT *)) window2_handler, /* event function override */
-    {0, 0, 239, 319},                        /* widget size                    */
+    (UINT (*)(GX_WIDGET *, GX_EVENT *)) ensaio_window_handler, /* event function override */
+    {0, 1, 239, 320},                        /* widget size                    */
     GX_NULL,                                 /* next widget                    */
-    &window2_hellotext_define,               /* child widget                   */
+    &ensaio_window_prt_forca_define,         /* child widget                   */
     0,                                       /* control block                  */
-    (void *) &window2_properties             /* extended properties            */
+    (void *) &ensaio_window_properties       /* extended properties            */
 };
-GX_WINDOW_PROPERTIES window1_properties =
+GX_WINDOW_PROPERTIES main_window_properties =
 {
-    0                                        /* wallpaper pixelmap id          */
+    GX_PIXELMAP_ID_LOGO                      /* wallpaper pixelmap id          */
 };
-GX_CHECKBOX_PROPERTIES window1_buttonenabler_properties =
-{
-    GX_STRING_ID_CHECKBOX_TEXT,              /* string id                      */
-    GX_FONT_ID_BUTTON,                       /* font id                        */
-    GX_COLOR_ID_BTN_TEXT,                    /* normal text color              */
-    GX_COLOR_ID_BTN_TEXT,                    /* selected text color            */
-    GX_PIXELMAP_ID_CHECKBOX_OFF,             /* unchecked pixelmap id          */
-    GX_PIXELMAP_ID_CHECKBOX_ON,              /* checked pixelmap id            */
-    0,                                       /* unchecked disabled pixelmap id */
-    0                                        /* checked disabled pixelmap id   */
-};
-GX_PROMPT_PROPERTIES window1_instructions_properties =
-{
-    GX_STRING_ID_INSTRUCT_CHECKBOX,          /* string id                      */
-    GX_FONT_ID_PROMPT,                       /* font id                        */
-    GX_COLOR_ID_TEXT,                        /* normal text color              */
-    GX_COLOR_ID_SELECTED_TEXT                /* selected text color            */
-};
-GX_TEXT_BUTTON_PROPERTIES window1_windowchanger_properties =
-{
-    GX_STRING_ID_BUTTON_DISABLED,            /* string id                      */
-    GX_FONT_ID_BUTTON,                       /* font id                        */
-    GX_COLOR_ID_BTN_TEXT,                    /* normal text color              */
-    GX_COLOR_ID_BTN_TEXT                     /* selected text color            */
-};
-GX_PROMPT_PROPERTIES window1_window1_text_properties =
+GX_PROMPT_PROPERTIES main_window_main_windows_text_properties =
 {
     GX_STRING_ID_WINDOW1,                    /* string id                      */
     GX_FONT_ID_PROMPT,                       /* font id                        */
     GX_COLOR_ID_TEXT,                        /* normal text color              */
     GX_COLOR_ID_SELECTED_TEXT                /* selected text color            */
 };
-GX_CHECKBOX_PROPERTIES window1_cb_newton_properties =
+GX_TEXT_BUTTON_PROPERTIES main_window_config_button_properties =
 {
-    GX_STRING_ID_STRING_1,                   /* string id                      */
+    GX_STRING_ID_STRING_12,                  /* string id                      */
     GX_FONT_ID_BUTTON,                       /* font id                        */
     GX_COLOR_ID_BTN_TEXT,                    /* normal text color              */
-    GX_COLOR_ID_BTN_TEXT,                    /* selected text color            */
-    0,                                       /* unchecked pixelmap id          */
-    0,                                       /* checked pixelmap id            */
-    0,                                       /* unchecked disabled pixelmap id */
-    0                                        /* checked disabled pixelmap id   */
+    GX_COLOR_ID_BTN_TEXT                     /* selected text color            */
 };
-GX_PROMPT_PROPERTIES window1_prt_s_forca_properties =
+GX_TEXT_BUTTON_PROPERTIES main_window_iniciar_ensaio_2_properties =
 {
-    GX_STRING_ID_STRING_5,                   /* string id                      */
-    GX_FONT_ID_PROMPT,                       /* font id                        */
-    GX_COLOR_ID_TEXT,                        /* normal text color              */
-    GX_COLOR_ID_SELECTED_TEXT                /* selected text color            */
+    GX_STRING_ID_STRING_15,                  /* string id                      */
+    GX_FONT_ID_BUTTON,                       /* font id                        */
+    GX_COLOR_ID_BTN_TEXT,                    /* normal text color              */
+    GX_COLOR_ID_BTN_TEXT                     /* selected text color            */
 };
-
-GX_CONST GX_STUDIO_WIDGET window1_prt_s_forca_define =
+GX_TEXT_BUTTON_PROPERTIES main_window_ensaio_button_properties =
 {
-    "prt_s_forca",
-    GX_TYPE_PROMPT,                          /* widget type                    */
-    ID_PRT_S_FORCA,                          /* widget id                      */
-    #if defined(GX_WIDGET_USER_DATA)
-    0,                                       /* user data                      */
-    #endif
-    GX_STYLE_BORDER_THIN|GX_STYLE_TRANSPARENT|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
-    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
-    100,                                     /* control block size             */
-    GX_COLOR_ID_WIDGET_FILL,                 /* normal color id                */
-    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
-    gx_studio_prompt_create,                 /* create function                */
-    GX_NULL,                                 /* drawing function override      */
-    GX_NULL,                                 /* event function override        */
-    {4, 116, 83, 159},                       /* widget size                    */
-    GX_NULL,                                 /* no next widget                 */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW1_CONTROL_BLOCK, window1_prt_s_forca), /* control block     */
-    (void *) &window1_prt_s_forca_properties /* extended properties            */
+    GX_STRING_ID_STRING_9,                   /* string id                      */
+    GX_FONT_ID_BUTTON,                       /* font id                        */
+    GX_COLOR_ID_BTN_TEXT,                    /* normal text color              */
+    GX_COLOR_ID_BTN_TEXT                     /* selected text color            */
 };
 
-GX_CONST GX_STUDIO_WIDGET window1_cb_newton_define =
+GX_CONST GX_STUDIO_WIDGET main_window_ensaio_button_define =
 {
-    "cb_newton",
-    GX_TYPE_CHECKBOX,                        /* widget type                    */
-    ID_CB_NEWTON,                            /* widget id                      */
-    #if defined(GX_WIDGET_USER_DATA)
-    0,                                       /* user data                      */
-    #endif
-    GX_STYLE_BORDER_NONE|GX_STYLE_TRANSPARENT|GX_STYLE_ENABLED|GX_STYLE_BUTTON_TOGGLE|GX_STYLE_TEXT_LEFT,   /* style flags */
-    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
-    120,                                     /* control block size             */
-    GX_COLOR_ID_BTN_LOWER,                   /* normal color id                */
-    GX_COLOR_ID_BTN_UPPER,                   /* selected color id              */
-    gx_studio_checkbox_create,               /* create function                */
-    GX_NULL,                                 /* drawing function override      */
-    GX_NULL,                                 /* event function override        */
-    {90, 178, 169, 201},                     /* widget size                    */
-    &window1_prt_s_forca_define,             /* next widget definition         */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW1_CONTROL_BLOCK, window1_cb_newton), /* control block       */
-    (void *) &window1_cb_newton_properties   /* extended properties            */
-};
-
-GX_CONST GX_STUDIO_WIDGET window1_window1_text_define =
-{
-    "window1_text",
-    GX_TYPE_PROMPT,                          /* widget type                    */
-    ID_WINDOW1_TEXT,                         /* widget id                      */
-    #if defined(GX_WIDGET_USER_DATA)
-    0,                                       /* user data                      */
-    #endif
-    GX_STYLE_BORDER_NONE|GX_STYLE_TRANSPARENT|GX_STYLE_TEXT_CENTER,   /* style flags */
-    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
-    100,                                     /* control block size             */
-    GX_COLOR_ID_WIDGET_FILL,                 /* normal color id                */
-    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
-    gx_studio_prompt_create,                 /* create function                */
-    GX_NULL,                                 /* drawing function override      */
-    GX_NULL,                                 /* event function override        */
-    {36, 10, 208, 33},                       /* widget size                    */
-    &window1_cb_newton_define,               /* next widget definition         */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW1_CONTROL_BLOCK, window1_window1_text), /* control block    */
-    (void *) &window1_window1_text_properties /* extended properties           */
-};
-
-GX_CONST GX_STUDIO_WIDGET window1_windowchanger_define =
-{
-    "windowchanger",
+    "ensaio_button",
     GX_TYPE_TEXT_BUTTON,                     /* widget type                    */
-    ID_WINDOWCHANGER,                        /* widget id                      */
+    ENSAIO_BUTTON,                           /* widget id                      */
     #if defined(GX_WIDGET_USER_DATA)
     0,                                       /* user data                      */
     #endif
@@ -375,64 +375,87 @@ GX_CONST GX_STUDIO_WIDGET window1_windowchanger_define =
     gx_studio_text_button_create,            /* create function                */
     GX_NULL,                                 /* drawing function override      */
     GX_NULL,                                 /* event function override        */
-    {28, 260, 207, 309},                     /* widget size                    */
-    &window1_window1_text_define,            /* next widget definition         */
+    {30, 240, 209, 289},                     /* widget size                    */
+    GX_NULL,                                 /* no next widget                 */
     GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW1_CONTROL_BLOCK, window1_windowchanger), /* control block   */
-    (void *) &window1_windowchanger_properties /* extended properties          */
+    offsetof(MAIN_WINDOW_CONTROL_BLOCK, main_window_ensaio_button), /* control block */
+    (void *) &main_window_ensaio_button_properties /* extended properties      */
 };
 
-GX_CONST GX_STUDIO_WIDGET window1_instructions_define =
+GX_CONST GX_STUDIO_WIDGET main_window_iniciar_ensaio_2_define =
 {
-    "instructions",
-    GX_TYPE_PROMPT,                          /* widget type                    */
-    ID_INSTRUCTIONS,                         /* widget id                      */
+    "iniciar_ensaio_2",
+    GX_TYPE_TEXT_BUTTON,                     /* widget type                    */
+    ENSAIO,                                  /* widget id                      */
     #if defined(GX_WIDGET_USER_DATA)
     0,                                       /* user data                      */
     #endif
-    GX_STYLE_BORDER_THIN|GX_STYLE_DRAW_SELECTED|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    GX_STYLE_BORDER_NONE|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    0,                                       /* status flags                   */
+    104,                                     /* control block size             */
+    GX_COLOR_ID_BTN_LOWER,                   /* normal color id                */
+    GX_COLOR_ID_BTN_UPPER,                   /* selected color id              */
+    gx_studio_text_button_create,            /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {30, 180, 209, 229},                     /* widget size                    */
+    &main_window_ensaio_button_define,       /* next widget definition         */
+    GX_NULL,                                 /* no child widgets               */ 
+    offsetof(MAIN_WINDOW_CONTROL_BLOCK, main_window_iniciar_ensaio_2), /* control block */
+    (void *) &main_window_iniciar_ensaio_2_properties /* extended properties   */
+};
+
+GX_CONST GX_STUDIO_WIDGET main_window_config_button_define =
+{
+    "config_button",
+    GX_TYPE_TEXT_BUTTON,                     /* widget type                    */
+    CONFIG_BUTTON,                           /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_NONE|GX_STYLE_ENABLED|GX_STYLE_TEXT_CENTER,   /* style flags */
+    0,                                       /* status flags                   */
+    104,                                     /* control block size             */
+    GX_COLOR_ID_BTN_LOWER,                   /* normal color id                */
+    GX_COLOR_ID_BTN_UPPER,                   /* selected color id              */
+    gx_studio_text_button_create,            /* create function                */
+    GX_NULL,                                 /* drawing function override      */
+    GX_NULL,                                 /* event function override        */
+    {30, 120, 209, 169},                     /* widget size                    */
+    &main_window_iniciar_ensaio_2_define,    /* next widget definition         */
+    GX_NULL,                                 /* no child widgets               */ 
+    offsetof(MAIN_WINDOW_CONTROL_BLOCK, main_window_config_button), /* control block */
+    (void *) &main_window_config_button_properties /* extended properties      */
+};
+
+GX_CONST GX_STUDIO_WIDGET main_window_main_windows_text_define =
+{
+    "main_windows_text",
+    GX_TYPE_PROMPT,                          /* widget type                    */
+    MAIN_WINDOW_TEXT,                        /* widget id                      */
+    #if defined(GX_WIDGET_USER_DATA)
+    0,                                       /* user data                      */
+    #endif
+    GX_STYLE_BORDER_NONE|GX_STYLE_TRANSPARENT|GX_STYLE_TEXT_CENTER,   /* style flags */
     GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
     100,                                     /* control block size             */
     GX_COLOR_ID_WIDGET_FILL,                 /* normal color id                */
-    GX_COLOR_ID_WINDOW_BORDER,               /* selected color id              */
+    GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
     gx_studio_prompt_create,                 /* create function                */
     GX_NULL,                                 /* drawing function override      */
     GX_NULL,                                 /* event function override        */
-    {9, 61, 228, 99},                        /* widget size                    */
-    &window1_windowchanger_define,           /* next widget definition         */
+    {34, 77, 206, 100},                      /* widget size                    */
+    &main_window_config_button_define,       /* next widget definition         */
     GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW1_CONTROL_BLOCK, window1_instructions), /* control block    */
-    (void *) &window1_instructions_properties /* extended properties           */
+    offsetof(MAIN_WINDOW_CONTROL_BLOCK, main_window_main_windows_text), /* control block */
+    (void *) &main_window_main_windows_text_properties /* extended properties  */
 };
 
-GX_CONST GX_STUDIO_WIDGET window1_buttonenabler_define =
+GX_CONST GX_STUDIO_WIDGET main_window_define =
 {
-    "buttonenabler",
-    GX_TYPE_CHECKBOX,                        /* widget type                    */
-    ID_BUTTONENABLER,                        /* widget id                      */
-    #if defined(GX_WIDGET_USER_DATA)
-    0,                                       /* user data                      */
-    #endif
-    GX_STYLE_BORDER_NONE|GX_STYLE_TRANSPARENT|GX_STYLE_ENABLED|GX_STYLE_BUTTON_TOGGLE|GX_STYLE_TEXT_LEFT,   /* style flags */
-    GX_STATUS_ACCEPTS_FOCUS,                 /* status flags                   */
-    120,                                     /* control block size             */
-    GX_COLOR_ID_BTN_LOWER,                   /* normal color id                */
-    GX_COLOR_ID_BTN_UPPER,                   /* selected color id              */
-    gx_studio_checkbox_create,               /* create function                */
-    GX_NULL,                                 /* drawing function override      */
-    GX_NULL,                                 /* event function override        */
-    {89, 114, 248, 163},                     /* widget size                    */
-    &window1_instructions_define,            /* next widget definition         */
-    GX_NULL,                                 /* no child widgets               */ 
-    offsetof(WINDOW1_CONTROL_BLOCK, window1_buttonenabler), /* control block   */
-    (void *) &window1_buttonenabler_properties /* extended properties          */
-};
-
-GX_CONST GX_STUDIO_WIDGET window1_define =
-{
-    "window1",
+    "main_window",
     GX_TYPE_WINDOW,                          /* widget type                    */
-    ID_WINDOW1,                              /* widget id                      */
+    MAIN_WINDOW,                             /* widget id                      */
     #if defined(GX_WIDGET_USER_DATA)
     0,                                       /* user data                      */
     #endif
@@ -443,17 +466,18 @@ GX_CONST GX_STUDIO_WIDGET window1_define =
     GX_COLOR_ID_SELECTED_FILL,               /* selected color id              */
     gx_studio_window_create,                 /* create function                */
     GX_NULL,                                 /* drawing function override      */
-    (UINT (*)(GX_WIDGET *, GX_EVENT *)) window1_handler, /* event function override */
+    (UINT (*)(GX_WIDGET *, GX_EVENT *)) main_window_handler, /* event function override */
     {0, 0, 239, 319},                        /* widget size                    */
     GX_NULL,                                 /* next widget                    */
-    &window1_buttonenabler_define,           /* child widget                   */
+    &main_window_main_windows_text_define,   /* child widget                   */
     0,                                       /* control block                  */
-    (void *) &window1_properties             /* extended properties            */
+    (void *) &main_window_properties         /* extended properties            */
 };
 GX_CONST GX_STUDIO_WIDGET_ENTRY guiapp_widget_table[] =
 {
-    { &window2_define, (GX_WIDGET *) &window2 },
-    { &window1_define, (GX_WIDGET *) &window1 },
+    { &config_window_define, (GX_WIDGET *) &config_window },
+    { &ensaio_window_define, (GX_WIDGET *) &ensaio_window },
+    { &main_window_define, (GX_WIDGET *) &main_window },
     {GX_NULL, GX_NULL}
 };
 

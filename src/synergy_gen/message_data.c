@@ -3,6 +3,8 @@
 #ifndef SF_MESSAGE_CFG_QUEUE_SIZE
 #define SF_MESSAGE_CFG_QUEUE_SIZE (16)
 #endif
+TX_QUEUE teste_thread_message_queue;
+static uint8_t queue_memory_teste_thread_message_queue[SF_MESSAGE_CFG_QUEUE_SIZE];
 TX_QUEUE main_thread_message_queue;
 static uint8_t queue_memory_main_thread_message_queue[SF_MESSAGE_CFG_QUEUE_SIZE];
 static sf_message_subscriber_t main_thread_message_queue_0_0 =
@@ -18,6 +20,8 @@ sf_message_subscriber_list_t * p_subscriber_lists[] =
 void g_message_init(void);
 void g_message_init(void)
 {
+    tx_queue_create (&teste_thread_message_queue, (CHAR *) "Teste_Thread Message Queue", 1,
+                     &queue_memory_teste_thread_message_queue, sizeof(queue_memory_teste_thread_message_queue));
     tx_queue_create (&main_thread_message_queue, (CHAR *) "Main Thread Message Queue", 1,
                      &queue_memory_main_thread_message_queue, sizeof(queue_memory_main_thread_message_queue));
 }
