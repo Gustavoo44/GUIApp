@@ -223,7 +223,7 @@ void main_thread_entry(void) {
 	{
 		bool new_gui_event = false;
 
-		err = g_sf_message0.p_api->pend(g_sf_message0.p_ctrl, &main_thread_message_queue, (sf_message_header_t **) &p_message, TX_WAIT_FOREVER);
+		err = g_sf_message0.p_api->pend(g_sf_message0.p_ctrl, &main_thread_message_queue, (sf_message_header_t **) &p_message, TX_NO_WAIT);
 		if (err)
 		{
 			/** TODO: Handle error. */
@@ -252,7 +252,7 @@ void main_thread_entry(void) {
 
 		/** Message is processed, so release buffer. */
 		err = g_sf_message0.p_api->bufferRelease(g_sf_message0.p_ctrl, (sf_message_header_t *) p_message, SF_MESSAGE_RELEASE_OPTION_FORCED_RELEASE);
-		
+
 		if (err)
 		{
 			/** TODO: Handle error. */
@@ -278,7 +278,6 @@ void main_thread_entry(void) {
         gx_system_canvas_refresh();
         //toggle_led(2);
         tx_thread_sleep(10);
-
 
 	}
 
@@ -336,6 +335,7 @@ void g_lcd_spi_callback(spi_callback_args_t * p_args)
 
 void time_int_callback(timer_callback_args_t * p_args)
 {
+    SSP_PARAMETER_NOT_USED(p_args);
     result_status = ADC_HAL_channel_read(0, &adc_result);
     vin_ant2=vin_ant1;
     vin_ant1=vin;
@@ -346,7 +346,6 @@ void time_int_callback(timer_callback_args_t * p_args)
 
     vout=b0*vin+b1*vin_ant1+b2*vin_ant2-a1*vout_ant1-a2*vout_ant2;
     media_R = vout;
-    tx_semaphore_ceiling_put(&g_main_semaphore_lcdc, 1);
 }
 
 void toggle_led (bsp_led_t led)

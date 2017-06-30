@@ -19,9 +19,6 @@ SSP_VECTOR_DEFINE_CHAN(adc_scan_end_isr, ADC, SCAN_END, 0);
 SSP_VECTOR_DEFINE_CHAN(adc_scan_end_b_isr, ADC, SCAN_END_B, 0);
 #endif
 #endif
-#ifndef NULL
-void NULL(adc_callback_args_t * p_args);
-#endif
 adc_instance_ctrl_t g_adc0_ctrl;
 const adc_cfg_t g_adc0_cfg =
 { .unit = 0, .mode = ADC_MODE_CONTINUOUS_SCAN, .resolution = ADC_RESOLUTION_12_BIT, .alignment = ADC_ALIGNMENT_RIGHT,
@@ -193,8 +190,9 @@ const sf_touch_panel_instance_t g_sf_touch_panel_i2c =
 { .p_ctrl = &g_sf_touch_panel_i2c_ctrl, .p_cfg = &g_sf_touch_panel_i2c_cfg, .p_api =
           &g_sf_touch_panel_on_sf_touch_panel_i2c };
 /*******************************************************************************************************************//**
- * @brief      This is a weak example initialization error function.  It should be overridden by defining a user  function 
- *             with the prototype below.
+ * @brief      Initialization function that the user can choose to have called automatically during thread entry.
+ *             The user can call this function at a later time if desired using the prototype below.
+
  *             - void g_sf_touch_panel_i2c_err_callback(void * p_instance, void * p_data)
  *
  * @param[in]  p_instance arguments used to identify which instance caused the error and p_data Callback arguments used to identify what error caused the callback.
@@ -208,6 +206,20 @@ void g_sf_touch_panel_i2c_err_callback_internal(void * p_instance, void * p_data
 
     /** An error has occurred. Please check function arguments for more information. */
     BSP_CFG_HANDLE_UNRECOVERABLE_ERROR (0);
+}
+/*******************************************************************************************************************//**
+ * @brief     This is sf touch panel initialization function. User Can call this function in the application if required with the below mentioned prototype.
+ *            - void sf_touch_panel_i2c_init0(void)
+ **********************************************************************************************************************/
+void sf_touch_panel_i2c_init0(void)
+{
+    ssp_err_t ssp_err_g_sf_touch_panel_i2c;
+    ssp_err_g_sf_touch_panel_i2c = g_sf_touch_panel_i2c.p_api->open (g_sf_touch_panel_i2c.p_ctrl,
+                                                                     g_sf_touch_panel_i2c.p_cfg);
+    if (SSP_SUCCESS != ssp_err_g_sf_touch_panel_i2c)
+    {
+        g_sf_touch_panel_i2c_err_callback ((void *) &g_sf_touch_panel_i2c, &ssp_err_g_sf_touch_panel_i2c);
+    }
 }
 #if !defined(SSP_SUPPRESS_ISR_g_spi_lcdc) && !defined(SSP_SUPPRESS_ISR_SCI0)
 SSP_VECTOR_DEFINE_CHAN(sci_spi_txi_rxi_tei_isr, SCI, RXI, 0);
@@ -309,13 +321,10 @@ static void main_thread_func(ULONG thread_input)
     }
 
     /* Initialize each module instance. */
-    ssp_err_t ssp_err_g_sf_touch_panel_i2c;
-    ssp_err_g_sf_touch_panel_i2c = g_sf_touch_panel_i2c.p_api->open (g_sf_touch_panel_i2c.p_ctrl,
-                                                                     g_sf_touch_panel_i2c.p_cfg);
-    if (SSP_SUCCESS != ssp_err_g_sf_touch_panel_i2c)
-    {
-        g_sf_touch_panel_i2c_err_callback ((void *) &g_sf_touch_panel_i2c, &ssp_err_g_sf_touch_panel_i2c);
-    }
+    /** Call initialization function if user has selected to do so. */
+#if (1)
+    sf_touch_panel_i2c_init0 ();
+#endif
 
     /* Enter user code for this thread. */
     main_thread_entry ();

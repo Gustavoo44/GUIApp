@@ -79,13 +79,13 @@ Synergy Configuration
       P007 162 - - - - Disabled - - "ADC1: PGAVSS0" 
       P008 161 ADC0_AN03 GPIO23 - - "Analog mode" - - "ADC0: AN03; IRQ0: IRQ12" 
       P009 160 ADC0_AN04 GPIO22 - - "Analog mode" - - "ADC0: AN04; IRQ0: IRQ13" 
-      P010 159 GPIO GPIO20 - IRQ14-DS "Input mode" - None "ADC1: AN03; IRQ0: IRQ14" 
+      P010 159 GPIO GPIO20 - None "Output mode (Initial Low)" CMOS None "ADC1: AN03; IRQ0: IRQ14" 
       P014 152 DAC0_DA GPIO19 - - "Analog mode" - - "ADC0: AN05; ADC1: AN05; CMP0: IVREF3; DAC120: DA" 
       P015 151 ADC0_AN06 GPIO18 - - "Analog mode" - - "ADC0: AN06; ADC1: AN06; CMP0: IVCMP1; DAC121: DA; IRQ0: IRQ13" 
       P100 132 SCI0_RXD_MISO SCI0_RXD0_SCL0_MISO0 Low None "Peripheral mode" CMOS None "AGT0: AGTIO; BUS0: D0_DQ0; GLCDC0: LCD_EXTCLK; IIC1: SCL; IRQ0: IRQ02; KINT0: KRM0; POEG0: GTETRG; SCI0: RXD_MISO; SCI0: SCL; SCI1: SCK; SPI0: MISO" 
       P101 131 SCI0_TXD_MOSI SCI0_TXD0_SDA0_MOSI0 Low None "Peripheral mode" CMOS None "AGT0: AGTEE; BUS0: D1_DQ1; GLCDC0: LCD_CLK; IIC1: SDA; IRQ0: IRQ01; KINT0: KRM1; POEG1: GTETRG; SCI0: SDA; SCI0: TXD_MOSI; SCI1: CTS_RTS_SS; SPI0: MOSI" 
       P102 130 SCI0_SCK SCI0_SCK0 Low - "Peripheral mode" CMOS None "ADC0: ADTRG; AGT0: AGTO; BUS0: D2_DQ2; GLCDC0: LCD_TCON0; GPT2: GTIOCB; KINT0: KRM2; OPS0: GTOWLO; SCI0: SCK; SPI0: RSPCK" 
-      P103 129 SCI0_CTS_RTS_SS SCI0_CTS0_RTS0_SS0 Low - "Peripheral mode" CMOS None "BUS0: D3_DQ3; GLCDC0: LCD_TCON1; GPT2: GTIOCA; KINT0: KRM3; OPS0: GTOWUP; SCI0: CTS_RTS_SS; SPI0: SSL0" 
+      P103 129 SCI0_CTS_RTS_SS SCI0_CTS0_RTS0_SS0 Medium - "Peripheral mode" CMOS None "BUS0: D3_DQ3; GLCDC0: LCD_TCON1; GPT2: GTIOCA; KINT0: KRM3; OPS0: GTOWUP; SCI0: CTS_RTS_SS; SPI0: SSL0" 
       P104 128 SCI8_RXD_MISO SCI8_RXD8_SCL8_MISO8 Low None "Peripheral mode" CMOS None "BUS0: D4_DQ4; GLCDC0: LCD_TCON2; IRQ0: IRQ01; KINT0: KRM4; POEG1: GTETRG; SCI8: RXD_MISO; SCI8: SCL; SPI0: SSL1" 
       P105 127 SCI8_TXD_MOSI SCI8_TXD8_SDA8_MOSI8 Low None "Peripheral mode" CMOS None "BUS0: D5_DQ5; GLCDC0: LCD_TCON3; IRQ0: IRQ00; KINT0: KRM5; POEG0: GTETRG; SCI8: SDA; SCI8: TXD_MOSI; SPI0: SSL2" 
       P106 126 SCI8_SCK SCI8_SCK8 Low - "Peripheral mode" CMOS None "BUS0: D6_DQ6; GLCDC0: LCD_DATA00; GPT8: GTIOCB; KINT0: KRM6; SCI8: SCK; SPI0: SSL3" 
@@ -94,10 +94,10 @@ Synergy Configuration
       P109 90 DEBUG0_TDO JTAG_TDO Low - "Peripheral mode" CMOS None "CAN1: CTX; CGC0: CLKOUT; DEBUG0: SWO; DEBUG0: TDO; GPT1: GTIOCA; OPS0: GTOVUP; SCI9: SDA; SCI9: TXD_MOSI; SPI1: MOSI" 
       P110 91 DEBUG0_TDI JTAG_TDI Low None "Peripheral mode" CMOS None "CAN1: CRX; CMP0: VCOUT; DEBUG0: TDI; GPT1: GTIOCB; IRQ0: IRQ03; OPS0: GTOVLO; SCI2: CTS_RTS_SS; SCI9: RXD_MISO; SCI9: SCL; SPI1: MISO" 
       P111 92 GPIO GPIO4 - IRQ4 "Input mode" - None "BUS0: A05; GLCDC0: LCD_DATA12; GPT3: GTIOCA; IRQ0: IRQ04; SCI2: SCK; SCI9: SCK; SPI1: RSPCK" 
-      P112 93 GPIO GPIO5 - - "Input mode" - None "BUS0: A04; GLCDC0: LCD_DATA11; GPT3: GTIOCB; SCI2: SDA; SCI2: TXD_MOSI; SSI0: SSISCK" 
+      P112 93 GPIO GPIO5 Low - "Output mode (Initial Low)" CMOS None "BUS0: A04; GLCDC0: LCD_DATA11; GPT3: GTIOCB; SCI2: SDA; SCI2: TXD_MOSI; SSI0: SSISCK" 
       P113 94 GPIO GPIO6 Medium - "Output mode (Initial Low)" CMOS None "BUS0: A03; GLCDC0: LCD_DATA10; SCI2: RXD_MISO; SCI2: SCL; SSI0: SSIWS" 
-      P114 95 - - - - Disabled - - "BUS0: A02; GLCDC0: LCD_DATA09; SSI0: SSIRXD" 
-      P115 96 GPIO GPIO40 Low - "Output mode (Initial Low)" CMOS None "BUS0: A01; GLCDC0: LCD_DATA08; SSI0: SSITXD" 
+      P114 95 GPIO - Low - "Output mode (Initial Low)" CMOS None "BUS0: A02; GLCDC0: LCD_DATA09; SSI0: SSIRXD" 
+      P115 96 GPIO GPIO40 Low - "Output mode (Initial High)" CMOS None "BUS0: A01; GLCDC0: LCD_DATA08; SSI0: SSITXD" 
       P200 69 - - - - Disabled - - "IRQ0: NMI" 
       P201 68 - - - - Disabled - - - 
       P202 54 SCI2_SCK SCI2_SCK2 Low None "Peripheral mode" CMOS None "BUS0: WR1_BC1; CAN0: CRX; GLCDC0: LCD_TCON3; GPT5: GTIOCB; IRQ0: IRQ03; SCI2: SCK; SCI9: RXD_MISO; SCI9: SCL; SDHI0: DAT6; SPI1: MISO" 
@@ -135,7 +135,7 @@ Synergy Configuration
       P408 43 CTSU0_TS04 Cap_Touch_Sensing_Unit_TS04 Low None "Peripheral mode" CMOS None "CTSU0: TS04; ETHERC0: CRS_DV; GPT10: GTIOCB; IRQ0: IRQ07; OPS0: GTOWLO; SCI3: RXD_MISO; SCI3: SCL; USBFS0: ID; USBHS0: ID" 
       P409 42 CTSU0_TS05 Cap_Touch_Sensing_Unit_TS05 Low None "Peripheral mode" CMOS None "CTSU0: TS05; ETHERC0: RX_ER; GPT10: GTIOCA; IRQ0: IRQ06; OPS0: GTOWUP; SCI3: SDA; SCI3: TXD_MOSI; USBFS0: EXICEN; USBHS0: EXICEN" 
       P410 41 - - - - Disabled - - "AGT1: AGTOB; CTSU0: TS06; ETHERC0: RXD1; GPT9: GTIOCB; IRQ0: IRQ05; OPS0: GTOVLO; SCI0: RXD_MISO; SCI0: SCL; SCI3: SCK; SDHI0: DAT1; SPI0: MISO" 
-      P411 40 - - - - Disabled - - "AGT1: AGTOA; CTSU0: TS07; ETHERC0: RXD0; GPT9: GTIOCA; IRQ0: IRQ04; OPS0: GTOVUP; SCI0: SDA; SCI0: TXD_MOSI; SCI3: CTS_RTS_SS; SDHI0: DAT0; SPI0: MOSI" 
+      P411 40 GPT9_GTIOCA - High None "Peripheral mode" CMOS None "AGT1: AGTOA; CTSU0: TS07; ETHERC0: RXD0; GPT9: GTIOCA; IRQ0: IRQ04; OPS0: GTOVUP; SCI0: SDA; SCI0: TXD_MOSI; SCI3: CTS_RTS_SS; SDHI0: DAT0; SPI0: MOSI" 
       P412 39 - - - - Disabled - - "CTSU0: TS08; ETHERC0: REF50CK; OPS0: GTOULO; SCI0: SCK; SDHI0: CMD; SPI0: RSPCK" 
       P413 38 GPIO GPIO15 Medium - "Output mode (Initial Low)" CMOS None "CTSU0: TS09; ETHERC0: TXD0; OPS0: GTOUUP; SCI0: CTS_RTS_SS; SDHI0: CLK; SPI0: SSL0" 
       P414 37 CTSU0_TS10 Cap_Touch_Sensing_Unit_TS10 Low - "Peripheral mode" CMOS None "CTSU0: TS10; ETHERC0: TXD1; SDHI0: WP; SPI0: SSL1" 
@@ -301,9 +301,7 @@ Synergy Configuration
     Instance "GUIX on gx"
       Instance "g_sf_el_gx GUIX Port on sf_el_gx"
         Name: g_sf_el_gx
-        Name of Display Driver Run-time Configuration (Must be a valid symbol): g_display_runtime_cfg_bg
-        Name of Frame Buffer A (Must be a valid symbol): g_display_fb_background[0]
-        Name of Frame Buffer B (NULL allowed if consisting a single frame buffer system): g_display_fb_background[1]
+        Display Driver Configuration Inheritance: Inherit Graphics Screen 1
         Name of User Callback function: NULL
         Screen Rotation Angle(Clockwise): 0
         GUIX Canvas Buffer (required if rotation angle is not zero): Not used
@@ -536,12 +534,16 @@ Synergy Configuration
       Reset Pin: IOPORT_PORT_06_PIN_09
       Touch Event Class Instance Number: 0
       Touch Coordinate Rotation Angle(Clockwise): 0
+      Name of generated initialization function: sf_touch_panel_i2c_init0
+      Auto Initialization: Enable
       
       Instance "g_sf_message0 Messaging Framework on sf_message"
         Name: g_sf_message0
         Work memory size in bytes: 2048
         Pointer to subscriber list array: p_subscriber_lists
         name of the block pool internally used in the messaging framework: sf_msg_blk_pool
+        Name of generated initialization function: sf_message_init0
+        Auto Initialization: Enable
         
       Instance "g_i2c I2C Master Driver on r_riic"
         Name: g_i2c
@@ -717,6 +719,22 @@ Synergy Configuration
     Auto start: Enabled
     Time slicing interval (ticks): 10
     
+    Instance "g_timer1 Timer Driver on r_gpt"
+      Name: g_timer1
+      Channel: 9
+      Mode: Periodic
+      Period Value: 20
+      Period Unit: Milliseconds
+      Duty Cycle Value: 20
+      Duty Cycle Unit: Unit Percent
+      Auto Start: True
+      GTIOCA Output Enabled: True
+      GTIOCA Stop Level: Pin Level Low
+      GTIOCB Output Enabled: False
+      GTIOCB Stop Level: Pin Level Low
+      Callback: NULL
+      Interrupt Priority: Priority 2
+      
   Messaging
     Subscriber "Main Thread" 0 0
       Event Class "Touch"
